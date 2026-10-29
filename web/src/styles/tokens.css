@@ -1,0 +1,83 @@
+/* Rapig design tokens — warm paper base, single orange accent. */
+:root {
+  color-scheme: light;
+
+  /* surfaces */
+  --color-bg: #faf7f2;
+  --color-surface: #ffffff;
+  --color-border: #e7e0d8;
+  --color-border-strong: #d6cec2;
+
+  /* type */
+  --color-text: #1c1917;
+  --color-muted: #78716c;
+
+  /* accent */
+  --color-primary: #f97316;
+  --color-primary-hover: #ea580c;
+  --color-primary-soft: #fff7ed;
+  --color-primary-ink: #c2410c; /* orange readable as text on soft surfaces */
+  --color-on-primary: #1c1917; /* dark ink on orange keeps buttons legible */
+
+  /* status */
+  --color-danger: #dc2626;
+  --color-danger-soft: #fef2f2;
+  --color-success: #15803d;
+  --color-success-soft: #f0fdf4;
+
+  /* feedback */
+  --color-focus-soft: rgba(249, 115, 22, 0.18);
+  --color-overlay: rgba(28, 25, 23, 0.42);
+
+  /* shape */
+  --radius: 10px;
+  --radius-sm: 7px;
+  --radius-pill: 999px;
+
+  /* typography */
+  --font-sans: system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  --fs-xs: 12px;
+  --fs-sm: 13px;
+  --fs-base: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 19px;
+
+  /* layout */
+  --shell-topbar: 56px;
+  --shell-sidebar: 208px;
+  --page-max: 1080px;
+
+  /* motion */
+  --dur: 140ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* one elevation, used only by popovers and dialogs */
+  --shadow-pop: 0 16px 40px -24px rgba(28, 25, 23, 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --color-bg: #141210;
+    --color-surface: #1d1915;
+    --color-border: #332e28;
+    --color-border-strong: #463f37;
+
+    --color-text: #f5f0e8;
+    --color-muted: #a8a29e;
+
+    --color-primary-soft: #2a1d12;
+    --color-primary-ink: #fdba74;
+
+    --color-danger: #f87171;
+    --color-danger-soft: #2a1414;
+    --color-success: #86efac;
+    --color-success-soft: #12241a;
+
+    --color-focus-soft: rgba(249, 115, 22, 0.28);
+    --color-overlay: rgba(0, 0, 0, 0.58);
+
+    --shadow-pop: 0 16px 40px -20px rgba(0, 0, 0, 0.72);
+  }
+}

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13. 下载中心 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="downloads">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">13. 下载中心</h1>
+      <p>Rapig 有两个下载页面，用途不同：</p>
+<table><thead><tr><th>页面</th><th>含义</th><th>文件最终在哪</th></tr></thead><tbody>
+<tr><td>下载（<code>/downloads</code>）</td><td>浏览器把文件下载到你自己的电脑</td><td>你的电脑（浏览器下载目录）</td></tr>
+<tr><td>离线下载（<code>/transfers</code>）</td><td>服务器替你去网上下载</td><td>网盘里的某个文件夹</td></tr>
+</tbody></table>
+<h2 id="131浏览器下载下载页">13.1 浏览器下载（下载页）</h2>
+<p><strong>怎么发起</strong></p>
+<ol>
+  <li>在文件页勾选文件 → 批量条「下载」；或行末「更多」菜单点「下载」。</li>
+  <li>也可以把光标放在文件行上按 <code>空格</code> 键加入下载队列。</li>
+  <li>文件夹不参与下载，需要先进入文件夹再选文件。</li>
+</ol>
+<p><strong>任务列表</strong></p>
+<table><thead><tr><th>项</th><th>说明</th></tr></thead><tbody>
+<tr><td>筛选</td><td>全部 / 进行中 / 已完成 / 失败，标签上显示数量</td></tr>
+<tr><td>显示</td><td>文件名、大小、进度、状态</td></tr>
+<tr><td>单任务操作</td><td>暂停、继续、重试（失败时）、取消</td></tr>
+<tr><td>批量操作</td><td>全部暂停、全部继续、清除已完成</td></tr>
+<tr><td>并发</td><td>同时最多下载 2 个任务，其余排队</td></tr>
+</tbody></table>
+<p><strong>记录说明</strong></p>
+<ul>
+  <li>下载任务记录保存在浏览器本地，刷新或关闭页面后仍在；但已下载的内容不会保留，重新下载即可。</li>
+  <li>换浏览器/换电脑看不到旧的下载记录（记录不跟随账号同步）。</li>
+  <li>文件保存位置、是否每次询问，由浏览器自身的下载设置决定。</li>
+</ul>
+<h2 id="132离线下载服务器下载">13.2 离线下载（服务器下载）</h2>
+<p>「离线下载」页让服务器去下载，完成后直接存进网盘，适合大文件、慢速源或不想开着电脑等下载的场景。</p>
+<p><strong>创建任务</strong></p>
+<ol>
+  <li>在文件页工具条点「离线下载」（保存到当前文件夹），或在「离线下载」页点「新建任务」。</li>
+  <li>选择链接类型：</li>
+</ol>
+<table><thead><tr><th>类型</th><th>输入</th><th>说明</th></tr></thead><tbody>
+<tr><td>HTTP 链接</td><td><code>https://example.com/file.zip</code></td><td>由服务器直接下载；只支持公网 HTTP/HTTPS，私网与回环地址会被拒绝</td></tr>
+<tr><td>磁力链接</td><td><code>magnet:?xt=urn:btih:…</code></td><td>交给 qBittorrent 下载</td></tr>
+<tr><td>种子文件</td><td>选择本地 <code>.torrent</code></td><td>交给 qBittorrent 下载；仅支持 <code>.torrent</code>，有大小上限</td></tr>
+</tbody></table>
+<ol>
+  <li>可选填「任务名称 / 文件名」，只影响网盘里的显示名称。</li>
+  <li>提交后任务出现在列表，完成后文件出现在目标文件夹；多文件种子会在该目录下建子目录。</li>
+</ol>
+<p><strong>任务列表</strong></p>
+<table><thead><tr><th>列</th><th>说明</th></tr></thead><tbody>
+<tr><td>名称</td><td>网盘中的显示名</td></tr>
+<tr><td>来源</td><td>HTTP / 磁力 / 种子</td></tr>
+<tr><td>大小</td><td>已知时显示，未知显示 <code>—</code></td></tr>
+<tr><td>状态</td><td>排队中 / 下载中 / 已暂停 / 已完成 / 失败 / 已取消</td></tr>
+<tr><td>进度</td><td>百分比；无法估算时显示动态进度条</td></tr>
+<tr><td>更新时间</td><td>最近一次状态变化</td></tr>
+<tr><td>操作</td><td>暂停、继续、删除任务</td></tr>
+</tbody></table>
+<blockquote><p>「删除」只删除任务记录，<strong>不会删除</strong>已经下载完成的文件。</p></blockquote>
+<p><strong>关于 qBittorrent</strong></p>
+<ul>
+  <li>磁力与种子功能依赖 qBittorrent：需要部署方在服务端配置 qB 的 WebUI 地址和账号（环境变量或启动参数），普通用户无法自行配置。</li>
+  <li>未配置 qB 时，创建任务对话框中不会出现「磁力链接」「种子文件」选项，HTTP 直链仍可用。</li>
+  <li>Rapig 把任务交给 qB 并在完成后取回文件，<strong>不保种</strong>；下载完成前请不要删除 qB 里的对应任务。</li>
+  <li>HTTP 下载受服务器出网策略限制（默认禁止访问内网地址），失败时先确认链接是否公网可直连。</li>
+</ul>
+<h2 id="133常见问题">13.3 常见问题</h2>
+<table><thead><tr><th>现象</th><th>原因与处理</th></tr></thead><tbody>
+<tr><td>HTTP 任务立刻失败</td><td>链接不是公网直链、需要登录、或服务器访问不到该站点</td></tr>
+<tr><td>看不到磁力/种子选项</td><td>服务端未配置 qBittorrent</td></tr>
+<tr><td>磁力任务长时间排队</td><td>qB 未连接成功或没有可用 peer，稍后重试或换种子</td></tr>
+<tr><td>下载很慢</td><td>服务器带宽或源站限速；可暂停后稍后继续</td></tr>
+<tr><td>完成后文件不存在</td><td>查看任务信息；确认目标文件夹是否已被删除</td></tr>
+<tr><td>提示空间不足</td><td>清理回收站或删除文件后重试</td></tr>
+</tbody></table>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="trash.html"><span>上一篇</span>12. 回收站</a><a class="pn next" href="shares.html"><span>下一篇</span>14. 分享</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#131浏览器下载下载页">13.1 浏览器下载（下载页）</a><a class="toc-l2" href="#132离线下载服务器下载">13.2 离线下载（服务器下载）</a><a class="toc-l2" href="#133常见问题">13.3 常见问题</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

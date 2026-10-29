@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>15. 个人资料与设置 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="profile">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">15. 个人资料与设置</h1>
+      <p>Rapig 2.0 没有单独的「个人资料」页：账号相关的操作集中在<strong>设置页</strong>（<code>/settings</code>），入口是右上角账户菜单 →「设置」。</p>
+<h2 id="151账户菜单">15.1 账户菜单</h2>
+<p>顶栏右上角显示当前用户名，点击展开：</p>
+<table><thead><tr><th>项</th><th>作用</th></tr></thead><tbody>
+<tr><td>设置</td><td>进入 <code>/settings</code>（修改密码、注销账号）</td></tr>
+<tr><td>登出</td><td>退出登录，回到登录页</td></tr>
+</tbody></table>
+<h2 id="152修改密码">15.2 修改密码</h2>
+<ol>
+  <li>设置页「修改密码」：填写<strong>当前密码</strong>、<strong>新密码</strong>、<strong>确认新密码</strong>。</li>
+  <li>规则：新密码至少 8 个字符，不能与当前密码相同，两次输入必须一致。</li>
+  <li>保存成功后提示「密码已修改，其它设备上的登录已退出」——你当前这台设备也需用新密码重新登录。</li>
+</ol>
+<p>忘记密码时无法自助找回（没有邮箱/短信），需要管理员在「用户管理」里重置，见 16.2。</p>
+<h2 id="153存储用量">15.3 存储用量</h2>
+<ul>
+  <li>左侧栏底部显示当前账号的已用空间/配额进度条；配额越大进度越满。</li>
+  <li>分配了配额时，超出后上传会失败并提示空间不足；<code>0</code>/不限表示不限制。</li>
+  <li>回收站中的文件<strong>仍计入</strong>已用空间，清理回收站可立即释放。</li>
+  <li>管理员可在「用户管理 → 编辑」中调整单个账号的配额。</li>
+</ul>
+<h2 id="154注销账号">15.4 注销账号</h2>
+<p>设置页底部「注销账号」区域说明：提交后账号立即不可用，3 天后永久删除；删除后用户名保留 3 个月。此操作不可撤销，除非在宽限期内用撤销链接或联系管理员恢复。</p>
+<p><strong>操作步骤</strong></p>
+<ol>
+  <li>点「申请注销」。</li>
+  <li>在弹窗中填写<strong>当前密码</strong>，并输入<strong>当前用户名</strong>确认。</li>
+  <li>点「确认申请注销」。</li>
+  <li>系统弹出「保存撤销链接」：账号将在某个时间点被永久删除，在此之前可用该链接撤销注销。请<strong>立即复制保存</strong>（弹窗提供复制按钮），关闭后无法再次查看。</li>
+  <li>提交后你会立即被登出，账号无法再登录。</li>
+</ol>
+<p><strong>撤销注销</strong>：打开保存的撤销链接即可（链接一次性、无需登录），或联系管理员在「用户管理」中恢复账号。</p>
+<p><strong>注意</strong></p>
+<ul>
+  <li>宽限期内账号及文件仍占用空间；3 天后连同所有文件（含回收站）永久删除，不可恢复。</li>
+  <li>删除后用户名会被保留 3 个月，期间他人无法注册同名账号。</li>
+  <li>管理员账号一般不允许自行注销，请由其他管理员操作。</li>
+</ul>
+<h2 id="155注册">15.5 注册</h2>
+<p>如果站点开启了注册，登录页有「注册」入口：</p>
+<table><thead><tr><th>字段</th><th>说明</th></tr></thead><tbody>
+<tr><td>用户名</td><td>全站唯一，注册后不可更改</td></tr>
+<tr><td>密码</td><td>至少 8 个字符</td></tr>
+<tr><td>显示名</td><td>可选，界面中展示的名字</td></tr>
+</tbody></table>
+<p>注册成功通常自动登录。站点关闭注册时看不到该入口，需要管理员在「用户管理」里创建账号。</p>
+<h2 id="156常见问题">15.6 常见问题</h2>
+<table><thead><tr><th>现象</th><th>处理</th></tr></thead><tbody>
+<tr><td>修改密码后其它设备被登出</td><td>正常安全行为，用新密码重新登录</td></tr>
+<tr><td>找不到「个人资料」页</td><td>2.0 合并进「设置」，从账户菜单进入</td></tr>
+<tr><td>忘记密码</td><td>联系管理员重置，无法自助找回</td></tr>
+<tr><td>误点注销</td><td>尽快用保存的撤销链接，或请管理员恢复</td></tr>
+<tr><td>注销后用户名还能注册吗</td><td>保留 3 个月，之后可被注册</td></tr>
+</tbody></table>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="shares.html"><span>上一篇</span>14. 分享</a><a class="pn next" href="admin.html"><span>下一篇</span>16. 管理后台</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#151账户菜单">15.1 账户菜单</a><a class="toc-l2" href="#152修改密码">15.2 修改密码</a><a class="toc-l2" href="#153存储用量">15.3 存储用量</a><a class="toc-l2" href="#154注销账号">15.4 注销账号</a><a class="toc-l2" href="#155注册">15.5 注册</a><a class="toc-l2" href="#156常见问题">15.6 常见问题</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

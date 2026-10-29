@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9. 导航与界面 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="navigation">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">9. 导航与界面</h1>
+      <p>登录后的所有功能都通过一个网页界面完成，不需要另装客户端。</p>
+<h2 id="91顶部栏">9.1 顶部栏</h2>
+<table><thead><tr><th>元素</th><th>位置</th><th>作用</th></tr></thead><tbody>
+<tr><td>站点标志</td><td>左</td><td>点击回到「我的文件」根目录</td></tr>
+<tr><td>搜索框</td><td>中</td><td>按文件名搜索；回车进入搜索结果页（见 10.6）</td></tr>
+<tr><td>下载中心图标</td><td>右</td><td>打开浏览器下载面板；有进行中的任务时显示数字角标</td></tr>
+<tr><td>账户菜单</td><td>右</td><td>「设置」（修改密码、注销账号）与「登出」</td></tr>
+</tbody></table>
+<h2 id="92左侧栏">9.2 左侧栏</h2>
+<p>左侧栏按登录身份显示不同入口，当前页面会高亮。</p>
+<p><strong>所有用户</strong></p>
+<table><thead><tr><th>入口</th><th>页面</th><th>说明</th></tr></thead><tbody>
+<tr><td>我的文件</td><td><code>/files</code></td><td>个人根目录；文件、文件夹都在这里</td></tr>
+<tr><td>组空间</td><td><code>/groups/&lt;id&gt;</code></td><td>你加入的每个组显示为一条，组后带「管理员」标记表示你是组长</td></tr>
+<tr><td>分享</td><td><code>/shares</code></td><td>你创建的分享链接列表</td></tr>
+<tr><td>下载</td><td><code>/downloads</code></td><td>浏览器本机下载队列（跨页面保留）</td></tr>
+<tr><td>离线下载</td><td><code>/transfers</code></td><td>由服务器执行的 HTTP / 磁力 / 种子下载任务</td></tr>
+<tr><td>回收站</td><td><code>/trash</code></td><td>已删除的文件；有内容时显示数量角标</td></tr>
+<tr><td>设置</td><td><code>/settings</code></td><td>修改密码、注销账号</td></tr>
+</tbody></table>
+<p><strong>管理员额外显示</strong></p>
+<table><thead><tr><th>入口</th><th>页面</th><th>说明</th></tr></thead><tbody>
+<tr><td>用户管理</td><td><code>/admin/users</code></td><td>创建、禁用、重置密码、永久删除账号</td></tr>
+<tr><td>组管理</td><td><code>/admin/groups</code></td><td>建组、维护成员与组员权限（被委派建组权限的用户只看到「我的组」）</td></tr>
+<tr><td>审计日志</td><td><code>/admin/audit</code></td><td>按操作者 / 动作 / 时间查询</td></tr>
+<tr><td>系统设置</td><td><code>/admin/settings</code></td><td>站点名称、注册开关、默认配额等</td></tr>
+<tr><td>存储</td><td><code>/admin/storage</code></td><td>多本地存储根的查看与维护</td></tr>
+</tbody></table>
+<p>侧栏底部显示存储用量条：只有账号设置了配额时才出现，格式是「已用 / 配额」。</p>
+<h2 id="93文件页的结构">9.3 文件页的结构</h2>
+<p>文件页从上到下依次是：</p>
+<ol>
+  <li><strong>面包屑</strong>：显示当前位置，点击任意一级可跳回；根目录显示为「我的文件」。</li>
+  <li><strong>工具条</strong>：新建文件夹、上传文件、上传文件夹、离线下载，以及右侧的「列表 / 网格」切换。</li>
+  <li><strong>文件区</strong>：列表（适合看大小与时间）或网格（适合看缩略图与封面）。</li>
+  <li><strong>批量条</strong>：勾选任意文件/文件夹后从底部出现，包含全选、下载、分享、移动、复制、删除。</li>
+</ol>
+<h2 id="94选择文件">9.4 选择文件</h2>
+<table><thead><tr><th>操作</th><th>效果</th></tr></thead><tbody>
+<tr><td>单击行首复选框或文件名前的选择框</td><td>选中一项</td></tr>
+<tr><td>Shift + 点击</td><td>选中连续的区间</td></tr>
+<tr><td>Ctrl（macOS 为 ⌘）+ 点击</td><td>加选 / 取消单项</td></tr>
+<tr><td>在空白处按住拖动</td><td>框选</td></tr>
+<tr><td>列表头复选框</td><td>全选当前页</td></tr>
+</tbody></table>
+<h2 id="95视图偏好">9.5 视图偏好</h2>
+<p>「列表 / 网格」的选择记在本机浏览器里，下次登录仍保持；不同账号之间互不影响。</p>
+<h2 id="96手机与窄屏">9.6 手机与窄屏</h2>
+<p>窗口宽度小于约 860 像素时，左侧栏会隐藏。此时通过顶部栏的搜索框、下载中心与账户菜单进入各页面；桌面端请用宽屏以获得完整导航。</p>
+<h2 id="97快捷键与小技巧">9.7 快捷键与小技巧</h2>
+<ul>
+  <li><code>空格</code>：把当前选中的文件加入下载队列（在输入框或对话框中不生效）。</li>
+  <li><code>Esc</code>：关闭对话框、顶部搜索和下载面板。播放浮层用右上角按钮「收起」（音频继续播放）或「关闭并停止」。</li>
+  <li>双击文件或文件夹：打开（进入目录 / 播放或预览）。</li>
+  <li>把文件或文件夹拖到页面任意位置：直接上传到当前目录。</li>
+  <li>分组标题（如「我的文件」「组空间」）不可点击，只用于分区。</li>
+</ul>
+<h2 id="98页面打不开时">9.8 页面打不开时</h2>
+<ul>
+  <li>刷新页面后仍在原页面（地址里带目录 id），说明地址可直接收藏。</li>
+  <li>若提示登录失效，会跳回登录页；重新登录即可。</li>
+  <li>权限相关页面（例如组空间）打不开时，通常是没有加入该组或链接已过期，见 17. 常见问题。</li>
+</ul>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="login.html"><span>上一篇</span>8. 登录与账号</a><a class="pn next" href="files.html"><span>下一篇</span>10. 文件管理</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#91顶部栏">9.1 顶部栏</a><a class="toc-l2" href="#92左侧栏">9.2 左侧栏</a><a class="toc-l2" href="#93文件页的结构">9.3 文件页的结构</a><a class="toc-l2" href="#94选择文件">9.4 选择文件</a><a class="toc-l2" href="#95视图偏好">9.5 视图偏好</a><a class="toc-l2" href="#96手机与窄屏">9.6 手机与窄屏</a><a class="toc-l2" href="#97快捷键与小技巧">9.7 快捷键与小技巧</a><a class="toc-l2" href="#98页面打不开时">9.8 页面打不开时</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

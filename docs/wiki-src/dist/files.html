@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10. 文件管理 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="files">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">10. 文件管理</h1>
+      <p>「我的文件」是一个按账号隔离的私人空间：每个账号只能看到自己的文件，管理员也不能直接浏览他人的文件内容。</p>
+<h2 id="101上传文件">10.1 上传文件</h2>
+<table><thead><tr><th>方式</th><th>用法</th></tr></thead><tbody>
+<tr><td>上传文件</td><td>工具条「上传文件」→ 选择一个或多个文件</td></tr>
+<tr><td>上传文件夹</td><td>工具条「上传文件夹」→ 选择整个文件夹，保持原有目录结构</td></tr>
+<tr><td>拖拽</td><td>把文件/文件夹从资源管理器拖进页面，松手即上传到当前目录</td></tr>
+<tr><td>待上传队列</td><td>一次选择的文件较多时，先处理 5 个，其余显示在底部「待上传」条中</td></tr>
+</tbody></table>
+<p>说明：</p>
+<ul>
+  <li>单次选择超过 200 个文件的文件夹上传会被拒绝，请分次上传。</li>
+  <li>同名文件或文件夹不会自动改名：服务端返回「名称冲突」，请改名或换目录后重试。</li>
+  <li>超过 5 个的待上传文件只保存「清单」，刷新页面后点「选择文件继续上传」重新选择即可匹配；超过 7 天未继续会自动清理。</li>
+  <li>上传进度在右上角下载图标旁的「上传」抽屉中查看，可暂停/取消。</li>
+</ul>
+<h2 id="102新建文件夹">10.2 新建文件夹</h2>
+<p>工具条「新建文件夹」→ 输入名称 → 确定。名称规则：不能为空、不能包含 <code>/</code>、长度不超过系统上限；同一目录下不能重名。</p>
+<h2 id="103改名复制移动">10.3 改名、复制、移动</h2>
+<table><thead><tr><th>操作</th><th>入口</th><th>说明</th></tr></thead><tbody>
+<tr><td>改名</td><td>行末「更多」菜单 → 改名</td><td>只改显示名，不影响内容；同目录不能重名</td></tr>
+<tr><td>复制</td><td>行末「更多」菜单 → 复制</td><td>复制到当前目录或目标目录，新名字为「原名 - 副本」</td></tr>
+<tr><td>移动</td><td>批量条或行末菜单 → 移动</td><td>在目录树中选择目标目录；可一次移动多项</td></tr>
+</tbody></table>
+<p>移动/复制到组空间或个人空间之间不支持（跨空间操作会提示错误），组空间说明见 16.3。</p>
+<h2 id="104删除与回收站">10.4 删除与回收站</h2>
+<ul>
+  <li>删除=移入回收站，默认保留 <strong>7 天</strong>，到期自动彻底删除。</li>
+  <li>删除后 10 秒内可在右下角提示中「撤销」。</li>
+  <li>彻底删除、清空回收站不可恢复，详情见 12. 回收站。</li>
+  <li>组空间内的删除是<strong>永久删除</strong>，不经过回收站，说明见 16.3 组管理。</li>
+</ul>
+<h2 id="105下载">10.5 下载</h2>
+<ul>
+  <li>选中文件 → 批量条「下载」或行末「下载」，任务进入「下载」页的浏览器下载队列，可暂停、继续、重试。</li>
+  <li>文件夹不参与批量下载：选择文件夹里的文件请先进入文件夹。</li>
+  <li>同一时间最多并行下载 2 个任务，其余排队。</li>
+  <li>关闭页面不会丢任务：任务记录保存在本机浏览器中（但不保存文件内容）。</li>
+</ul>
+<h2 id="106搜索">10.6 搜索</h2>
+<p>顶部搜索框输入关键词回车，进入搜索结果页：</p>
+<table><thead><tr><th>项</th><th>说明</th></tr></thead><tbody>
+<tr><td>匹配方式</td><td>文件名包含关键词；3 个字符以上走全文索引，更短按前缀/包含匹配</td></tr>
+<tr><td>类型过滤</td><td>全部 / 文件夹 / 文档 / 图片 / 音频 / 视频 等（按扩展名归类）</td></tr>
+<tr><td>排序</td><td>相关度（默认）或最近修改</td></tr>
+<tr><td>分页</td><td>每页 50 条，底部「加载更多」</td></tr>
+</tbody></table>
+<p>搜索结果只能看到自己有权访问的内容；组空间文件出现在结果中时会标注所属组。</p>
+<h2 id="107配额与用量">10.7 配额与用量</h2>
+<ul>
+  <li>侧栏底部显示「已用 / 配额」，仅在管理员给你设置了配额时出现；未设配额表示不限。</li>
+  <li>上传前若空间不足会直接报错；可删除文件、清空回收站后再试。</li>
+  <li>回收站中的文件仍占用配额，直到被彻底删除。</li>
+</ul>
+<h2 id="108直接操作磁盘的注意事项">10.8 直接操作磁盘的注意事项</h2>
+<p>不要绕过 Rapig 直接移动或删除数据目录里的文件（<code>data/storage/</code> 是内容寻址存储，按哈希存放）。手工改动能导致文件丢失或引用错乱；需要备份请用 7. 升级与备份 中的方法。</p>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="navigation.html"><span>上一篇</span>9. 导航与界面</a><a class="pn next" href="playback.html"><span>下一篇</span>11. 播放、预览与文本编辑</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#101上传文件">10.1 上传文件</a><a class="toc-l2" href="#102新建文件夹">10.2 新建文件夹</a><a class="toc-l2" href="#103改名复制移动">10.3 改名、复制、移动</a><a class="toc-l2" href="#104删除与回收站">10.4 删除与回收站</a><a class="toc-l2" href="#105下载">10.5 下载</a><a class="toc-l2" href="#106搜索">10.6 搜索</a><a class="toc-l2" href="#107配额与用量">10.7 配额与用量</a><a class="toc-l2" href="#108直接操作磁盘的注意事项">10.8 直接操作磁盘的注意事项</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

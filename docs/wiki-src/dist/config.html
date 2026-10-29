@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6. 配置文件说明 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="config">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">6. 配置文件说明</h1>
+      <p>Rapig 没有 TOML/YAML/JSON 格式的「配置文件」。运行参数只有一个来源：<strong>命令行参数 &gt; 环境变量 &gt; 内置默认值</strong>。安装包在 Linux 上额外生成一个 <code>rapig.env</code>，它本质上就是一组环境变量。</p>
+<h2 id="61配置放在哪">6.1 配置放在哪</h2>
+<table><thead><tr><th>平台 / 方式</th><th>配置位置</th><th>修改方式</th></tr></thead><tbody>
+<tr><td>Linux 安装包</td><td><code>/opt/rapig/rapig.env</code>（0600，systemd 通过 EnvironmentFile 读取）</td><td><code>sudo rapig config</code> 或直接编辑，再 <code>sudo rapig service restart</code></td></tr>
+<tr><td>Linux 便携</td><td>无文件；启动参数 / 当前 shell 的环境变量</td><td><code>./rapig serve -addr ... -data ...</code> 或 <code>export RAPIG_...</code></td></tr>
+<tr><td>Windows 控制面板</td><td><code>%ProgramData%\Rapig\gui-config.json</code>（端口、数据目录、自启等）</td><td>控制面板「高级」页修改后点「保存并重启」</td></tr>
+</tbody></table>
+<h2 id="62常用参数">6.2 常用参数</h2>
+<table><thead><tr><th>参数（命令行 / 环境变量）</th><th>默认</th><th>说明</th></tr></thead><tbody>
+<tr><td><code>-addr</code> / <code>RAPIG_ADDR</code></td><td><code>127.0.0.1:50011</code></td><td>监听地址；局域网访问改 <code>0.0.0.0:50011</code></td></tr>
+<tr><td><code>-data</code> / <code>RAPIG_DATA_DIR</code></td><td>程序旁的 <code>data/</code>（安装包为 <code>/opt/rapig/data</code>）</td><td>数据库与文件所在目录</td></tr>
+<tr><td><code>-log-level</code> / <code>RAPIG_LOG_LEVEL</code></td><td><code>info</code></td><td><code>debug</code>/<code>info</code>/<code>warn</code>/<code>error</code></td></tr>
+<tr><td><code>-profile</code> / <code>RAPIG_PROFILE</code></td><td><code>low</code></td><td><code>low</code> 面向 512 MB 级机器；<code>high</code> 面向 4 GB+</td></tr>
+<tr><td><code>-cookie-secure</code> / <code>RAPIG_COOKIE_SECURE</code></td><td><code>auto</code></td><td><code>auto</code> 按请求是否 HTTPS；HTTPS 反代建议 <code>always</code></td></tr>
+<tr><td><code>-allow-origin</code> / <code>RAPIG_ALLOW_ORIGINS</code></td><td>空</td><td>额外允许的浏览器来源，可重复</td></tr>
+<tr><td><code>-worker</code> / <code>RAPIG_WORKER</code></td><td><code>internal</code></td><td><code>external</code> 时后台任务改由独立的 <code>rapig worker</code> 进程执行</td></tr>
+<tr><td><code>-qb-url</code> / <code>RAPIG_QB_URL</code></td><td>空</td><td>qBittorrent WebUI 地址，磁力/种子下载需要</td></tr>
+<tr><td><code>-qb-username</code> / <code>RAPIG_QB_USERNAME</code></td><td>空</td><td>qBittorrent WebUI 用户名</td></tr>
+<tr><td><code>-qb-password</code> / <code>RAPIG_QB_PASSWORD</code></td><td>空</td><td>qBittorrent WebUI 密码（推荐用环境变量）</td></tr>
+<tr><td><code>-allow-private-downloads</code> / <code>RAPIG_ALLOW_PRIVATE_DOWNLOADS</code></td><td>关</td><td>允许离线下载访问私网地址（有 SSRF 风险，仅内网测试）</td></tr>
+<tr><td><code>-pprof</code> / <code>RAPIG_PPROF</code></td><td>关</td><td>在回环地址暴露 Go pprof，用于诊断</td></tr>
+</tbody></table>
+<p><code>-profile low</code> 与 <code>high</code> 的差别在于数据库连接数、缓存大小、缓存/上传并发等内部参数；普通机器保持默认 <code>low</code> 即可，<code>high</code> 适合内存充足、并发较大的主机。</p>
+<h2 id="63rapigenv示例">6.3 rapig.env 示例</h2>
+<pre><code class="language-bash">RAPIG_ADDR=127.0.0.1:50011
+RAPIG_DATA_DIR=/opt/rapig/data
+RAPIG_PROFILE=low
+RAPIG_COOKIE_SECURE=auto
+
+# 可选
+#RAPIG_WORKER=external
+#RAPIG_QB_URL=http://127.0.0.1:8080
+#RAPIG_QB_USERNAME=admin
+#RAPIG_QB_PASSWORD=change-me</code></pre>
+<p>查看当前生效的配置：</p>
+<pre><code class="language-bash">sudo rapig config --show</code></pre>
+<p>交互式修改常用项（监听地址、数据目录、profile、cookie-secure）：</p>
+<pre><code class="language-bash">sudo rapig config
+sudo rapig service restart</code></pre>
+<h2 id="64哪些改动需要重启">6.4 哪些改动需要重启</h2>
+<table><thead><tr><th>改动</th><th>是否要重启</th></tr></thead><tbody>
+<tr><td>监听地址、端口、数据目录、profile、cookie-secure、worker、qB 连接</td><td>需要重启服务</td></tr>
+<tr><td>站点设置（站点名、是否允许注册/注销、默认配额）</td><td>保存即生效，不需要重启</td></tr>
+<tr><td>存储策略（管理后台 → 存储）</td><td>保存即生效</td></tr>
+</tbody></table>
+<p>Linux 重启：<code>sudo rapig service restart</code>；Windows：控制面板「保存并重启」。</p>
+<h2 id="65windows控制面板配置">6.5 Windows 控制面板配置</h2>
+<p><code>gui-config.json</code> 由控制面板维护，一般不需要手工编辑。它保存：监听端口、数据目录、内存 profile、日志级别、Cookie 安全策略、是否开机自启。修改端口或数据目录请走「高级」页，程序会自动重启核心并做健康检查。</p>
+<h2 id="66命令行与服务的一致性">6.6 命令行与服务的一致性</h2>
+<ul>
+  <li>安装方式下，systemd 启动的是 <code>rapig serve</code>，它会读取 <code>rapig.env</code>；直接运行 <code>rapig serve</code> 时<strong>不读</strong> <code>rapig.env</code>，请用参数或当前 shell 的环境变量（避免同时启动两个实例争用数据库）。</li>
+  <li>Windows 控制面板与命令行核心共用 <code>%ProgramData%\Rapig</code>，不要同时运行两者。</li>
+</ul>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="proxy.html"><span>上一篇</span>5. 反向代理与 HTTPS</a><a class="pn next" href="upgrade.html"><span>下一篇</span>7. 升级、备份与迁移</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#61配置放在哪">6.1 配置放在哪</a><a class="toc-l2" href="#62常用参数">6.2 常用参数</a><a class="toc-l2" href="#63rapigenv示例">6.3 rapig.env 示例</a><a class="toc-l2" href="#64哪些改动需要重启">6.4 哪些改动需要重启</a><a class="toc-l2" href="#65windows控制面板配置">6.5 Windows 控制面板配置</a><a class="toc-l2" href="#66命令行与服务的一致性">6.6 命令行与服务的一致性</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

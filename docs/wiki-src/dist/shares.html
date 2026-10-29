@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14. 分享 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="shares">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">14. 分享</h1>
+      <p>把文件或文件夹生成一个链接发给别人，对方<strong>无需登录</strong>即可访问（有密码时需先输入密码）。</p>
+<h2 id="141创建分享">14.1 创建分享</h2>
+<p>两种入口：</p>
+<ol>
+  <li>文件页勾选文件/文件夹 → 底部批量条「分享」；</li>
+  <li>文件行末「更多」菜单 →「分享」。</li>
+</ol>
+<p>弹窗中可以设置：</p>
+<table><thead><tr><th>选项</th><th>说明</th></tr></thead><tbody>
+<tr><td>分享内容</td><td>单文件/单文件夹，或多选合并为<strong>一条</strong>链接（一次最多 100 项）</td></tr>
+<tr><td>密码保护</td><td>可选；开启后需输入 4–64 个字符的密码</td></tr>
+<tr><td>有效期</td><td>1 小时 / 1 天 / 7 天（默认）/ 30 天 / 永久；选「永久」需勾选确认语</td></tr>
+<tr><td>下载次数上限</td><td>0–1,000,000；留空或 0 表示不限</td></tr>
+</tbody></table>
+<p>创建成功后会显示链接，并提供「复制链接」。浏览器阻止自动复制时，链接已全选，按 <code>Ctrl+C</code> 手动复制即可。</p>
+<h2 id="142管理分享分享页">14.2 管理分享（分享页）</h2>
+<p>左侧栏「分享」进入 <code>/shares</code>，列表显示：名称、类型、状态、下载次数、访问次数、创建时间。</p>
+<p>工具条可筛选状态：<strong>全部 / 有效 / 已撤销 / 已过期</strong>。</p>
+<table><thead><tr><th>操作</th><th>作用</th></tr></thead><tbody>
+<tr><td>复制链接</td><td>复制分享地址</td></tr>
+<tr><td>撤销</td><td>链接立即失效；列表项变为「已撤销」</td></tr>
+<tr><td>恢复</td><td>仅对已撤销的链接可用，恢复后链接重新生效（内容与设置不变）</td></tr>
+<tr><td>清理</td><td>永久删除分享记录（仅「已撤销」或「已过期」可清理），删除后无法恢复</td></tr>
+</tbody></table>
+<p>支持勾选多条批量撤销、批量清理。撤销不会删除原文件。</p>
+<h2 id="143访问者看到的页面">14.3 访问者看到的页面</h2>
+<ul>
+  <li>地址形如 <code>https://你的域名/s/&lt;token&gt;</code>。</li>
+  <li>设置了密码的分享先显示「受密码保护的分享」，输入密码后展示内容。</li>
+  <li>内容列表显示文件/文件夹、大小与剩余下载次数（若设了上限）。</li>
+  <li><strong>单个文件</strong>：提供「下载文件」；不支持在线预览（包括图片和音视频）。</li>
+  <li><strong>文件夹</strong>：逐级浏览，可分别下载文件；也可「打包下载全部」，但<strong>一次最多打包 5 个文件</strong>，文件较多时需先「加载更多」分批下载。</li>
+</ul>
+<p>失效情况：</p>
+<table><thead><tr><th>提示</th><th>含义</th></tr></thead><tbody>
+<tr><td>分享不存在或已失效</td><td>链接被撤销、已过期、或记录已被清理</td></tr>
+<tr><td>分享下载次数已用完</td><td>达到创建时设置的下载次数上限</td></tr>
+</tbody></table>
+<h2 id="144安全建议">14.4 安全建议</h2>
+<ul>
+  <li>公开分享尽量同时设置<strong>密码 + 有效期</strong>；「永久」链接不会自动回收，谨慎使用。</li>
+  <li>撤销会让链接立刻失效，但访问者已下载到本地的文件无法追回。</li>
+  <li>密码不是万能的：分享链接本身就是访问凭证，请只发给需要的人。</li>
+  <li>密码尝试有频率限制（同一条分享、同一来源地址 10 分钟内最多 10 次），被拦截时会提示「尝试过于频繁，请稍后再试」。</li>
+  <li>分享的下载统计只保留最近 30 天的累计值，长期统计请自行记录。</li>
+</ul>
+<h2 id="145常见问题">14.5 常见问题</h2>
+<table><thead><tr><th>现象</th><th>处理</th></tr></thead><tbody>
+<tr><td>对方说打不开</td><td>确认链接完整、未过期、未撤销；如设了密码确认已告知</td></tr>
+<tr><td>提示次数已用完</td><td>重新创建分享，或联系分享者</td></tr>
+<tr><td>想换密码/有效期</td><td>分享创建后不可改；撤销旧链接后重新创建</td></tr>
+<tr><td>打包下载失败</td><td>文件超过 5 个，分批下载；或先进入子目录</td></tr>
+</tbody></table>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="downloads.html"><span>上一篇</span>13. 下载中心</a><a class="pn next" href="profile.html"><span>下一篇</span>15. 个人资料与设置</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#141创建分享">14.1 创建分享</a><a class="toc-l2" href="#142管理分享分享页">14.2 管理分享（分享页）</a><a class="toc-l2" href="#143访问者看到的页面">14.3 访问者看到的页面</a><a class="toc-l2" href="#144安全建议">14.4 安全建议</a><a class="toc-l2" href="#145常见问题">14.5 常见问题</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

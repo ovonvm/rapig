@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3. Windows 部署 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="windows">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">3. Windows 部署</h1>
+      <p>Windows 版本的 Rapig 是一个<strong>单文件控制面板</strong>：一个 <code>Rapig.exe</code> 同时包含图形界面和网盘服务核心，不需要安装、不需要解压 zip、不需要 .NET 运行时。</p>
+<h2 id="31系统要求">3.1 系统要求</h2>
+<table><thead><tr><th>项目</th><th>要求</th></tr></thead><tbody>
+<tr><td>系统</td><td>Windows 10 / 11 x64</td></tr>
+<tr><td>权限</td><td>需要管理员权限（程序已声明，双击时弹 UAC，点「是」）</td></tr>
+<tr><td>位置</td><td>建议单独建一个文件夹存放 <code>Rapig.exe</code>，避免中文路径与很深的目录</td></tr>
+<tr><td>网络</td><td>默认只监听本机 <code>127.0.0.1:50011</code></td></tr>
+</tbody></table>
+<h2 id="32第一次运行">3.2 第一次运行</h2>
+<ol>
+  <li>把 <code>Rapig.exe</code> 放进单独文件夹，双击运行。</li>
+  <li>UAC 弹窗点「是」。</li>
+  <li>首次启动会自动创建管理员账号 <code>admin</code>，并弹出随机初始密码（只显示一次）。</li>
+</ol>
+<ul>
+  <li>也可以事后查看 <code>%ProgramData%\Rapig\data\bootstrap\initial-admin.txt</code>；修改过密码后该文件会被删除。</li>
+</ul>
+<ol>
+  <li>首页点「启动服务」，等待状态变为运行中。</li>
+  <li>点「在浏览器打开网盘」，用 <code>admin</code> + 初始密码登录。</li>
+  <li>登录后到「设置」修改密码。</li>
+</ol>
+<h2 id="33控制面板有什么">3.3 控制面板有什么</h2>
+<table><thead><tr><th>页面</th><th>功能</th><th>说明</th></tr></thead><tbody>
+<tr><td>首页</td><td>启动 / 停止 / 重启服务</td><td>启动后会用健康检查确认核心已就绪</td></tr>
+<tr><td>首页</td><td>在浏览器打开网盘</td><td>默认浏览器打开 <code>http://127.0.0.1:50011</code></td></tr>
+<tr><td>首页</td><td>运行日志</td><td>显示最近的服务输出，便于排错</td></tr>
+<tr><td>首页</td><td>查看 / 复制初始密码</td><td>读取初始管理员信息文件，改密后不可再读</td></tr>
+<tr><td>高级</td><td>端口与配置</td><td>修改监听端口（1–65535）等，保存并重启生效</td></tr>
+<tr><td>高级</td><td>运行自检 doctor</td><td>检查数据目录、数据库、磁盘空间等</td></tr>
+<tr><td>高级</td><td>备份数据（zip）</td><td>打包数据目录到 <code>%ProgramData%\Rapig\backups</code></td></tr>
+<tr><td>高级</td><td>打开数据目录 / 备份目录</td><td>在资源管理器中直接打开</td></tr>
+<tr><td>高级</td><td>更改数据目录</td><td>只能选择空目录；停止服务后迁移</td></tr>
+<tr><td>高级</td><td>重置管理员密码</td><td>忘记密码时使用，重置后需要重新登录</td></tr>
+<tr><td>高级</td><td>登录 Windows 时自动启动（最小化）</td><td>写入当前用户的启动项，无需计划任务</td></tr>
+</tbody></table>
+<h2 id="34数据放在哪">3.4 数据放在哪</h2>
+<table><thead><tr><th>路径</th><th>内容</th></tr></thead><tbody>
+<tr><td><code>%ProgramData%\Rapig\data\db\rapig.db</code></td><td>数据库（SQLite）</td></tr>
+<tr><td><code>%ProgramData%\Rapig\data\storage\</code></td><td>文件内容</td></tr>
+<tr><td><code>%ProgramData%\Rapig\data\bootstrap\</code></td><td>初始管理员信息（改密后删除）</td></tr>
+<tr><td><code>%ProgramData%\Rapig\backups\</code></td><td>备份 zip</td></tr>
+<tr><td><code>%ProgramData%\Rapig\core\rapig-core.exe</code></td><td>首次启动时释放的服务核心</td></tr>
+<tr><td><code>%ProgramData%\Rapig\gui-config.json</code></td><td>控制面板配置（端口、数据目录、自启等）</td></tr>
+</tbody></table>
+<p>备份、迁移、重装都以 <code>%ProgramData%\Rapig</code> 为准；卸载前请确认是否需要保留这里的数据。</p>
+<h2 id="35让局域网里的其它设备访问">3.5 让局域网里的其它设备访问</h2>
+<p>控制面板默认只监听本机，这是最安全的默认值。如需局域网访问：</p>
+<ol>
+  <li>高级页把端口保持不变，或改成你想要的端口。</li>
+  <li>在防火墙中放行该端口，并把监听地址改为 <code>0.0.0.0</code>（通过命令行参数）或在本机放一个反向代理。</li>
+  <li>其它设备访问 <code>http://&lt;这台电脑的局域网 IP&gt;:50011</code>。</li>
+</ol>
+<blockquote><p>注意：局域网明文访问意味着同网段的人可能看到传输内容。正式使用建议按「5. 反向代理与 HTTPS」在反向代理上配置 HTTPS。</p></blockquote>
+<h2 id="36升级">3.6 升级</h2>
+<ol>
+  <li>首页点「停止服务」。</li>
+  <li>用新的 <code>Rapig.exe</code> 覆盖旧文件（数据在 <code>%ProgramData%\Rapig</code>，不受影响）。</li>
+  <li>重新双击运行，点「启动服务」。</li>
+</ol>
+<p>升级前建议先在「高级 → 备份数据」做一次 zip 备份。Rapig 的数据库迁移在启动时自动执行，不需要手工操作。</p>
+<h2 id="37卸载">3.7 卸载</h2>
+<ol>
+  <li>首页「停止服务」。</li>
+  <li>关闭控制面板。</li>
+  <li>删除 <code>Rapig.exe</code> 所在文件夹。</li>
+  <li>如需彻底清除：删除 <code>%ProgramData%\Rapig</code>（<strong>会删除所有数据，不可恢复</strong>）。</li>
+  <li>若开过开机自启，在「任务管理器 → 启动」或「设置 → 应用 → 启动」中删除 <code>Rapig</code> 项。</li>
+</ol>
+<h2 id="38只想用命令行核心">3.8 只想用命令行核心</h2>
+<p>控制面板本质是给 <code>%ProgramData%\Rapig\core\rapig-core.exe</code> 套了一层界面。也可以直接命令行运行：</p>
+<pre><code class="language-powershell">&amp; &#34;$env:ProgramData\Rapig\core\rapig-core.exe&#34; serve</code></pre>
+<p>此时数据仍使用 <code>%ProgramData%\Rapig</code>，与图形界面共用，不要同时启动两份。</p>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="requirements.html"><span>上一篇</span>2. 环境与依赖</a><a class="pn next" href="linux.html"><span>下一篇</span>4. Linux 部署</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#31系统要求">3.1 系统要求</a><a class="toc-l2" href="#32第一次运行">3.2 第一次运行</a><a class="toc-l2" href="#33控制面板有什么">3.3 控制面板有什么</a><a class="toc-l2" href="#34数据放在哪">3.4 数据放在哪</a><a class="toc-l2" href="#35让局域网里的其它设备访问">3.5 让局域网里的其它设备访问</a><a class="toc-l2" href="#36升级">3.6 升级</a><a class="toc-l2" href="#37卸载">3.7 卸载</a><a class="toc-l2" href="#38只想用命令行核心">3.8 只想用命令行核心</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

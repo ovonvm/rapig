@@ -1,0 +1,113 @@
+name: release
+
+# 打 tag（v*）时自动构建发版产物；也可手动触发。
+# 产物：Linux tar.gz（含 install.sh/systemd/env/nginx/备份脚本）、Windows 桌面面板 Rapig.exe、无界面核心 rapig.exe。
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    name: build-linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # git describe 需要完整 tag 历史
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.27.3"
+          cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: setup pnpm
+        shell: bash
+        run: |
+          npm install -g pnpm@11.28.5
+          pnpm --version
+      - name: build (frontend + go + linux package)
+        shell: bash
+        run: bash scripts/build.sh
+      - name: show artifacts
+        shell: bash
+        run: ls -lh dist/linux/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: |
+            dist/linux/*.tar.gz
+            dist/linux/rapig-linux-amd64
+          if-no-files-found: error
+
+  windows:
+    name: build-windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.27.3"
+          cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: setup pnpm
+        shell: bash
+        run: |
+          npm install -g pnpm@11.28.5
+          pnpm --version
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: build core (windows + linux cross)
+        shell: bash
+        run: bash scripts/build.sh
+      - name: build desktop panel (WPF single file)
+        shell: bash
+        run: bash scripts/build-gui.sh
+      - name: show artifacts
+        shell: bash
+        run: ls -lh dist/Rapig.exe dist/core/rapig.exe
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: |
+            dist/Rapig.exe
+            dist/core/rapig.exe
+          if-no-files-found: error
+
+  publish:
+    name: publish-release
+    needs: [linux, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release
+      - name: flatten
+        shell: bash
+        run: |
+          mkdir -p out
+          cp release/linux/*.tar.gz out/ 2>/dev/null || true
+          cp release/windows/Rapig.exe out/ 2>/dev/null || true
+          cp release/windows/core/rapig.exe out/rapig-core-windows-amd64.exe 2>/dev/null || true
+          ls -lh out
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Rapig ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            out/*.tar.gz
+            out/Rapig.exe
+            out/rapig-core-windows-amd64.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

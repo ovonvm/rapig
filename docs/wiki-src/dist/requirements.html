@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2. 环境与依赖 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="requirements">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">2. 环境与依赖</h1>
+      <p>Rapig 的设计目标是「一台低配机器、一个程序文件」。除了可选的反向代理和 qBittorrent，不需要安装其它运行时。</p>
+<h2 id="21运行条件">2.1 运行条件</h2>
+<table><thead><tr><th>项目</th><th>要求</th></tr></thead><tbody>
+<tr><td>操作系统</td><td>Linux x86_64（推荐 systemd）；Windows 10/11 x64；其它系统可用源码自行构建</td></tr>
+<tr><td>内存</td><td>建议 512 MB 以上（默认 low 配置在 300 MB 量级即可运行）</td></tr>
+<tr><td>磁盘</td><td>按文件量准备；数据库和文件都在数据目录下</td></tr>
+<tr><td>浏览器</td><td>Chrome/Edge/Firefox/Safari 的近两年版本；移动端浏览器可用</td></tr>
+<tr><td>端口</td><td>默认 <code>127.0.0.1:50011</code>，可通过配置修改</td></tr>
+<tr><td>权限</td><td>Linux：安装与 systemd 操作需要 root，程序本身以普通用户运行；Windows：控制面板需要管理员权限</td></tr>
+</tbody></table>
+<h2 id="22不需要什么">2.2 不需要什么</h2>
+<ul>
+  <li>不需要 Node.js、Go、Python 或 .NET 运行时（Windows 控制面板是自包含单文件）。</li>
+  <li>不需要 MySQL/PostgreSQL/Redis：数据库是程序内的 SQLite，单文件存放。</li>
+  <li>不需要 ffmpeg：Rapig 不做服务端转码，能否播放由浏览器决定。</li>
+  <li>不需要对象存储或共享盘：文件保存在本地目录。</li>
+</ul>
+<h2 id="23可选组件">2.3 可选组件</h2>
+<table><thead><tr><th>组件</th><th>用途</th><th>说明</th></tr></thead><tbody>
+<tr><td>qBittorrent 4.6+ / 5.x</td><td>磁力链接与 <code>.torrent</code> 种子的离线下载</td><td>需要开启 WebUI，并把地址/用户名/密码配置给 Rapig</td></tr>
+<tr><td>Nginx / Caddy</td><td>反向代理、HTTPS、域名访问</td><td>见「5. 反向代理与 HTTPS」</td></tr>
+<tr><td>rsync + sqlite3 或 python3</td><td>备份脚本 <code>scripts/backup.sh</code></td><td>缺少时脚本会提示安装；也可停服后手工拷贝</td></tr>
+<tr><td>证书文件</td><td>HTTPS</td><td>由反向代理提供，Rapig 本身不直接管证书</td></tr>
+</tbody></table>
+<h2 id="24平台差异">2.4 平台差异</h2>
+<table><thead><tr><th>项目</th><th>Linux</th><th>Windows</th></tr></thead><tbody>
+<tr><td>安装</td><td><code>install.sh</code> 自动安装为服务</td><td>单文件 <code>Rapig.exe</code> 控制面板，双击即用</td></tr>
+<tr><td>后台运行</td><td>systemd 服务 <code>rapig</code></td><td>控制面板内启动核心进程；关闭窗口会停止服务</td></tr>
+<tr><td>日志</td><td><code>journalctl -u rapig</code></td><td>控制面板首页运行日志；命令行方式会写日志文件</td></tr>
+<tr><td>开机自启</td><td><code>systemctl enable rapig</code></td><td>控制面板「高级 → 登录 Windows 时自动启动」</td></tr>
+<tr><td>升级</td><td><code>sudo rapig upgrade --binary &lt;新程序&gt;</code></td><td>停止服务后用新 <code>Rapig.exe</code> 覆盖旧文件</td></tr>
+<tr><td>数据目录</td><td><code>/opt/rapig/data</code></td><td><code>%ProgramData%\Rapig\data</code></td></tr>
+</tbody></table>
+<h2 id="25网络与端口">2.5 网络与端口</h2>
+<p>默认只监听本机回环地址，意味着只有这台机器上的浏览器能打开。常见选择：</p>
+<ul>
+  <li><strong>只在本机用</strong>：保持默认，不需要改任何配置。</li>
+  <li><strong>局域网访问</strong>：把监听地址改为 <code>0.0.0.0:50011</code>（或反向代理到本机），并确保防火墙放行；此时建议至少开启 HTTPS 或限制在可信网络。</li>
+  <li><strong>公网访问</strong>：请在反向代理上终止 TLS，并阅读「5. 反向代理与 HTTPS」的安全清单；不要把 Rapig 的明文端口直接暴露到公网。</li>
+</ul>
+<h2 id="26从源码构建可选">2.6 从源码构建（可选）</h2>
+<p>普通用户不需要这一步。仓库自带构建脚本：</p>
+<pre><code class="language-bash">./scripts/build.sh        # 前端 + Go 核心，生成 Linux 发布包
+./scripts/build-gui.sh    # Windows 控制面板（需要 .NET 8 SDK）</code></pre>
+<p>需要 Go 1.24+、Node.js 20+ 与 pnpm。构建细节见仓库根目录 <code>README.md</code>。</p>
+<h2 id="27账号与权限前提">2.7 账号与权限前提</h2>
+<ul>
+  <li>Linux 安装方式会创建一个不能登录的 <code>rapig</code> 用户，数据目录归它所有；手工拷贝数据后如果权限不对，会表现为「能启动但打不开文件」或启动报错，修复方式是 <code>sudo chown -R rapig:rapig /opt/rapig/data</code>。</li>
+  <li>Windows 控制面板以管理员身份运行，数据写在 <code>%ProgramData%\Rapig</code>；同一台机器的其它标准用户可能无权访问该目录。</li>
+</ul>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="quickstart.html"><span>上一篇</span>1. 快速开始</a><a class="pn next" href="windows.html"><span>下一篇</span>3. Windows 部署</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#21运行条件">2.1 运行条件</a><a class="toc-l2" href="#22不需要什么">2.2 不需要什么</a><a class="toc-l2" href="#23可选组件">2.3 可选组件</a><a class="toc-l2" href="#24平台差异">2.4 平台差异</a><a class="toc-l2" href="#25网络与端口">2.5 网络与端口</a><a class="toc-l2" href="#26从源码构建可选">2.6 从源码构建（可选）</a><a class="toc-l2" href="#27账号与权限前提">2.7 账号与权限前提</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

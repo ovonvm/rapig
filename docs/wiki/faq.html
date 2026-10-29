@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>17. 常见问题 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="faq">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">17. 常见问题</h1>
+      <h2 id="171安装与启动">17.1 安装与启动</h2>
+<p><strong>网页打不开</strong></p>
+<ol>
+  <li>确认服务在跑：<code>curl http://127.0.0.1:50011/health</code>（Linux 用 <code>rapig service status</code> 或 <code>systemctl status rapig</code>）。</li>
+  <li>默认只监听 <code>127.0.0.1:50011</code>，<strong>其它电脑通过局域网打不开是正常的</strong>：请通过反向代理对外，或把监听地址改为 <code>0.0.0.0:50011</code>。</li>
+  <li>端口被占用时改端口（<code>RAPIG_ADDR</code> 或启动参数），注意防火墙放行。</li>
+  <li>看日志：Linux <code>journalctl -u rapig -n 100</code>；Windows 控制面板「查看日志」或数据目录下 <code>logs/rapig.log</code>。</li>
+  <li>用 <code>rapig doctor</code>（Windows 控制面板「诊断」）检查数据目录、端口、数据库。</li>
+</ol>
+<p><strong>安装后提示没有管理员 / 忘记初始密码</strong></p>
+<ul>
+  <li>Linux：初始密码在安装摘要里，也在 <code>&lt;data&gt;/bootstrap/initial-admin.txt</code>（首次改密后删除）。丢了可执行 <code>sudo rapig reset-admin-password</code>。</li>
+  <li>Windows：首次启动弹窗会显示一次初始密码；忘记可用控制面板「重置密码」。</li>
+  <li>实在无法进入：说明有另一个管理员账号，用它登录后在「用户管理」中重置。</li>
+</ul>
+<p><strong>旧版 1.x 的数据能直接升级到 Rapig 2.0 吗</strong></p>
+<p>不能。Rapig 2.0 是全新重写，数据库结构与数据目录布局都与 1.x 不同。请保留旧版本运行/导出需要的内容，再在新目录部署 2.0。</p>
+<h2 id="172登录与账号">17.2 登录与账号</h2>
+<table><thead><tr><th>现象</th><th>原因与处理</th></tr></thead><tbody>
+<tr><td>登录后又跳回登录页</td><td>反向代理下常见：确认用 HTTPS 访问、代理保留原始 Host（含端口）、配置 <code>RAPIG_COOKIE_SECURE</code> 为 <code>auto</code>/<code>always</code></td></tr>
+<tr><td>多次输错密码后无法登录</td><td>账号有失败锁定策略，等待一段时间再试，或让管理员在「用户管理」重置密码</td></tr>
+<tr><td>注册入口不见了</td><td>站点关闭了自助注册，请让管理员创建账号</td></tr>
+<tr><td>改完密码被登出</td><td>正常：修改密码会让其它设备上的会话失效</td></tr>
+<tr><td>想注销账号</td><td>设置页 →「注销账号」，3 天宽限期；务必保存撤销链接</td></tr>
+</tbody></table>
+<h2 id="173文件与上传">17.3 文件与上传</h2>
+<table><thead><tr><th>提示</th><th>原因与处理</th></tr></thead><tbody>
+<tr><td>空间不足 / quota exceeded</td><td>超出配额：删除文件、清空回收站，或让管理员调大配额</td></tr>
+<tr><td>文件太大</td><td>超出单文件上限</td></tr>
+<tr><td>同名文件已存在</td><td>同目录不自动改名：请改名或移动到其它目录</td></tr>
+<tr><td>上传很慢/中断</td><td>检查网络；大文件建议在网络稳定时上传，失败后重新上传即可</td></tr>
+<tr><td>选中很多文件后只传了 5 个</td><td>同时排队数有上限，其余进入草稿，稍后自动/手动继续</td></tr>
+</tbody></table>
+<h2 id="174媒体播放">17.4 媒体播放</h2>
+<table><thead><tr><th>现象</th><th>原因与处理</th></tr></thead><tbody>
+<tr><td>视频打不开、只有声音、黑屏</td><td>浏览器不支持该封装/编码（常见 MKV、HEVC、部分 AV1）。Rapig 不做服务端转码；请下载后用本地播放器，或换成 MP4(H.264)/WebM 等浏览器支持的格式</td></tr>
+<tr><td>字幕不显示</td><td>侧车字幕需与视频同目录、同名、扩展名为 <code>.vtt</code>/<code>.srt</code>/<code>.ass</code>/<code>.ssa</code>（VTT 优先）；非 UTF-8 文本可能乱码</td></tr>
+<tr><td>歌词不显示</td><td>同目录同名 <code>.lrc</code>（UTF-8）</td></tr>
+<tr><td>封面不显示</td><td>同目录同名图片或 <code>cover.<em></code>/<code>folder.</em></code>（jpg/png）</td></tr>
+<tr><td>换页面后音乐停了</td><td>全站浮层播放器依赖浏览器允许播放；被拦截时点右上角播放器按钮继续</td></tr>
+<tr><td>播放进度没记住</td><td>只记忆播放超过 10 秒的内容，且仅保存在当前浏览器</td></tr>
+</tbody></table>
+<h2 id="175分享">17.5 分享</h2>
+<table><thead><tr><th>现象</th><th>原因与处理</th></tr></thead><tbody>
+<tr><td>链接打不开</td><td>已撤销/已过期/已清理；或访问次数用尽</td></tr>
+<tr><td>提示要密码</td><td>分享者设置了密码保护，向对方索取</td></tr>
+<tr><td>提示「尝试过于频繁」</td><td>密码错误次数过多被临时限流，稍后再试</td></tr>
+<tr><td>打包下载失败</td><td>一次最多打包 5 个文件，分批下载</td></tr>
+<tr><td>分享的文件不能在线预览</td><td>公开分享页只提供下载，不支持在线预览</td></tr>
+</tbody></table>
+<h2 id="176离线下载磁力链">17.6 离线下载 / 磁力链</h2>
+<table><thead><tr><th>现象</th><th>原因与处理</th></tr></thead><tbody>
+<tr><td>没有「磁力链接/种子文件」选项</td><td>部署方未配置 qBittorrent（<code>RAPIG_QB_URL</code> 等），HTTP 直链仍可用</td></tr>
+<tr><td>HTTP 任务立刻失败</td><td>链接不是公网直链、需要登录、或服务器访问不到该站点</td></tr>
+<tr><td>一直排队/极慢</td><td>qB 未连上或无可用 peer；检查 qB 状态或换源</td></tr>
+<tr><td>完成后找不到文件</td><td>文件在创建任务时选择的目录；多文件种子会建子目录</td></tr>
+<tr><td>删除任务后文件也没了</td><td>删除只删任务记录；文件不会自动删除，若消失请查回收站</td></tr>
+</tbody></table>
+<h2 id="177存储与数据">17.7 存储与数据</h2>
+<table><thead><tr><th>问题</th><th>说明</th></tr></thead><tbody>
+<tr><td>数据存在哪</td><td>默认在可执行文件旁的 <code>data/</code>（Windows GUI 版在 <code>%ProgramData%\\Rapig\\data</code>）</td></tr>
+<tr><td>能直接改磁盘上的文件吗</td><td>不要。请通过网页/API 操作，否则数据库与文件会不一致</td></tr>
+<tr><td>如何备份</td><td>见 07：Linux 用安装包自带备份脚本，Windows 用控制面板「备份数据」</td></tr>
+<tr><td>磁盘快满了</td><td>清空回收站、删除大文件，或增加/切换存储（「存储」页）</td></tr>
+<tr><td>回收站清空后空间没变</td><td>检查是否还有其它文件；回收站内容在彻底删除后才释放</td></tr>
+</tbody></table>
+<h2 id="178系统与运维">17.8 系统与运维</h2>
+<table><thead><tr><th>问题</th><th>说明</th></tr></thead><tbody>
+<tr><td>内存占用多大</td><td>按低配置档设计运行在 512MB 级；实际取决于并发与预览</td></tr>
+<tr><td>Linux 怎么升级</td><td><code>sudo rapig upgrade --binary &lt;新二进制&gt;</code>（自动备份、失败回滚），详见 07</td></tr>
+<tr><td>Windows 怎么升级</td><td>关闭 Rapig，用新的 <code>Rapig.exe</code> 覆盖旧文件后重新启动（无命令行升级命令）</td></tr>
+<tr><td>怎么卸载</td><td>Linux <code>sudo rapig uninstall</code>（会删数据，谨慎）；Windows 在「应用」中卸载</td></tr>
+<tr><td>支持 Docker / 多节点 / 对象存储吗</td><td>不支持，当前只提供单机单实例部署</td></tr>
+<tr><td>有手机 App / WebDAV 吗</td><td>没有；手机可直接用浏览器访问</td></tr>
+<tr><td>日志在哪</td><td>Linux <code>journalctl -u rapig</code>；Windows 控制面板「查看日志」/ <code>logs/rapig.log</code></td></tr>
+</tbody></table>
+<h2 id="179还能问谁">17.9 还能问谁</h2>
+<ul>
+  <li>部署细节见 03、04、05、06；升级备份见 07；管理页见 16。</li>
+  <li>反馈问题时请附上：版本号（<code>rapig version</code>）、操作系统、复现步骤，以及对应时间的日志（注意先去掉敏感信息）。</li>
+</ul>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="admin.html"><span>上一篇</span>16. 管理后台</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#171安装与启动">17.1 安装与启动</a><a class="toc-l2" href="#172登录与账号">17.2 登录与账号</a><a class="toc-l2" href="#173文件与上传">17.3 文件与上传</a><a class="toc-l2" href="#174媒体播放">17.4 媒体播放</a><a class="toc-l2" href="#175分享">17.5 分享</a><a class="toc-l2" href="#176离线下载磁力链">17.6 离线下载 / 磁力链</a><a class="toc-l2" href="#177存储与数据">17.7 存储与数据</a><a class="toc-l2" href="#178系统与运维">17.8 系统与运维</a><a class="toc-l2" href="#179还能问谁">17.9 还能问谁</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

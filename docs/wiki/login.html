@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8. 登录与账号 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="login">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">8. 登录与账号</h1>
+      <p>Rapig 默认是一个多用户网盘：管理员创建账号，或由站点开放自助注册。每个账号的「我的文件」互相隔离。</p>
+<h2 id="81登录">8.1 登录</h2>
+<ol>
+  <li>打开 Rapig 地址（默认 <code>http://127.0.0.1:50011</code>），进入登录页。</li>
+  <li>「用户名 / 邮箱 / 手机号」填任意一个，再填密码。</li>
+  <li>点登录。成功后进入「我的文件」。</li>
+</ol>
+<p>登录失败时页面只提示「用户名或密码错误」，不会说明账号是否存在。连续输错 5 次会临时锁定该账号，页面会显示倒计时；等待结束或联系管理员重置密码。</p>
+<h2 id="82第一次登录管理员">8.2 第一次登录（管理员）</h2>
+<ul>
+  <li>安装或首次启动时程序自动创建管理员 <code>admin</code>。</li>
+  <li>初始密码只显示一次：Linux 安装摘要 / 首次前台启动的控制台输出；Windows 控制面板弹窗；同时写入数据目录的 <code>bootstrap/initial-admin.txt</code>。</li>
+  <li>首次登录后请立刻到「设置 → 修改密码」。修改后初始密码文件会被删除，其它设备上的旧会话也会失效。</li>
+  <li>忘记密码：Linux <code>sudo rapig reset-admin-password</code>；Windows 控制面板「高级 → 重置管理员密码」。重置会撤销该用户全部会话。</li>
+</ul>
+<h2 id="83注册">8.3 注册</h2>
+<p>注册默认关闭。管理员可在「系统设置 → 允许注册」中打开（只有 root 管理员能改）。</p>
+<p>开启后，登录页会出现「注册账号」入口。注册表单要求：</p>
+<table><thead><tr><th>字段</th><th>说明</th></tr></thead><tbody>
+<tr><td>用户名（选填）</td><td>2–32 个字符，只能包含字母、数字、<code>.</code>、<code>_</code>、<code>-</code></td></tr>
+<tr><td>邮箱（选填）</td><td>格式校验，不发送验证邮件</td></tr>
+<tr><td>手机号（选填）</td><td>格式校验，不发送短信</td></tr>
+<tr><td>密码 / 确认密码</td><td>8–128 个字符（按字节计）</td></tr>
+</tbody></table>
+<p>用户名、邮箱、手机号<strong>至少填一项</strong>即可注册；只填邮箱或手机号时，系统会自动分配一个 <code>u</code> 开头的用户名。注册成功后不会自动登录，请回到登录页登录。同一 IP 的注册请求有频率限制。</p>
+<h2 id="84角色与权限">8.4 角色与权限</h2>
+<table><thead><tr><th>角色</th><th>说明</th></tr></thead><tbody>
+<tr><td>管理员</td><td>可进入后台：用户管理、组管理、审计日志、系统设置、存储</td></tr>
+<tr><td>成员</td><td>只能使用自己的文件、组空间、分享、下载等</td></tr>
+</tbody></table>
+<p>第一个管理员是 <strong>root 管理员</strong>（主要管理员）：只有 root 能修改「允许注册」「允许注销」两个开关；root 不能被禁用、降级或删除。管理员对别人的文件没有特殊读取权限，越权访问统一返回 404 或拒绝。</p>
+<h2 id="85账号状态">8.5 账号状态</h2>
+<table><thead><tr><th>状态</th><th>含义</th></tr></thead><tbody>
+<tr><td>正常</td><td>可正常登录使用</td></tr>
+<tr><td>已禁用</td><td>管理员停用了账号，无法登录；数据保留</td></tr>
+<tr><td>注销中</td><td>已申请注销，等待 3 天宽限期结束</td></tr>
+<tr><td>临时锁定</td><td>连续登录失败被临时锁定，到期自动解除</td></tr>
+</tbody></table>
+<p>被停用的账号需要管理员在「用户管理」中「启用」后才能登录。</p>
+<h2 id="86修改密码">8.6 修改密码</h2>
+<p>「账户菜单 → 设置 → 修改密码」：输入当前密码、新密码、确认新密码。新密码至少 8 个字符。修改成功后，除当前设备外的其它登录会话会被强制退出。</p>
+<h2 id="87注销账号">8.7 注销账号</h2>
+<p>「设置 → 注销账号」可自助注销：</p>
+<ol>
+  <li>输入当前密码，并输入自己的用户名做二次确认。</li>
+  <li>提交后账号进入「注销中」状态，<strong>宽限期 3 天</strong>。</li>
+  <li>页面会显示一次性「撤销注销」链接，请立即保存；链接关闭后无法再次查看。</li>
+  <li>宽限期内账号不能登录，已创建的分享会失效；可以联系管理员恢复，或用撤销链接撤销。</li>
+  <li>3 天后系统自动删除账号及其文件，<strong>不可恢复</strong>。</li>
+  <li>注销后用户名会保留约 3 个月，期间不能被重新注册。</li>
+</ol>
+<blockquote><p>管理员账号不能自助注销（root 管理员尤其如此）。如需处理管理员账号，请用另一个管理员在「用户管理」中禁用或清除。清除操作会立即删除数据，请谨慎。</p></blockquote>
+<h2 id="88安全建议">8.8 安全建议</h2>
+<ul>
+  <li>每个使用者单独一个账号，不要共用管理员。</li>
+  <li>公网部署必须配 HTTPS，并改掉初始密码。</li>
+  <li>定期检查「用户管理」里的异常账号与「审计日志」中的登录失败记录。</li>
+  <li>账号被停用/注销后，其分享链接会失效；如怀疑泄露，直接撤销对应分享。</li>
+</ul>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="upgrade.html"><span>上一篇</span>7. 升级、备份与迁移</a><a class="pn next" href="navigation.html"><span>下一篇</span>9. 导航与界面</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#81登录">8.1 登录</a><a class="toc-l2" href="#82第一次登录管理员">8.2 第一次登录（管理员）</a><a class="toc-l2" href="#83注册">8.3 注册</a><a class="toc-l2" href="#84角色与权限">8.4 角色与权限</a><a class="toc-l2" href="#85账号状态">8.5 账号状态</a><a class="toc-l2" href="#86修改密码">8.6 修改密码</a><a class="toc-l2" href="#87注销账号">8.7 注销账号</a><a class="toc-l2" href="#88安全建议">8.8 安全建议</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

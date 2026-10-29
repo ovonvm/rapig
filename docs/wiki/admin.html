@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>16. 管理后台 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="admin">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">16. 管理后台</h1>
+      <p>管理后台面向管理员，用来管理用户、组、审计日志、站点设置与存储。普通用户看不到这些入口。</p>
+<h2 id="161怎么进入">16.1 怎么进入</h2>
+<p>左侧栏底部「管理」分组：</p>
+<table><thead><tr><th>入口</th><th>页面</th><th>谁能看到</th></tr></thead><tbody>
+<tr><td>用户管理</td><td><code>/admin/users</code></td><td>管理员</td></tr>
+<tr><td>组管理</td><td><code>/admin/groups</code></td><td>管理员；被授予「允许建组」的用户看到的是「我的组」</td></tr>
+<tr><td>审计日志</td><td><code>/admin/audit</code></td><td>管理员</td></tr>
+<tr><td>系统设置</td><td><code>/admin/settings</code></td><td>管理员（其中部分开关仅 root 管理员可改）</td></tr>
+<tr><td>存储</td><td><code>/admin/storage</code></td><td>管理员</td></tr>
+</tbody></table>
+<p>直接访问这些地址也要求管理员登录；普通用户会被拒绝。</p>
+<h2 id="162用户管理">16.2 用户管理</h2>
+<p>页面顶部有搜索框（按用户名）和「创建用户」按钮，列表右侧可「加载更多」。</p>
+<table><thead><tr><th>元素</th><th>说明</th></tr></thead><tbody>
+<tr><td>列表列</td><td>用户、角色、状态、配额、创建时间</td></tr>
+<tr><td>编辑</td><td>修改显示名、角色、允许建组、配额等</td></tr>
+<tr><td>禁用 / 启用</td><td>禁用后该用户立即无法登录；启用后恢复</td></tr>
+<tr><td>重置密码</td><td>生成一次性密码，<strong>只显示一次</strong>，请当场抄给用户</td></tr>
+<tr><td>筛选注销状态</td><td>可切换到「注销中」查看宽限期内的账号</td></tr>
+</tbody></table>
+<p><strong>创建用户</strong>：填写用户名、显示名、角色、配额；初始密码可以留空，留空时系统自动生成一次性密码，创建后只展示一次。</p>
+<p><strong>注销中的账号</strong>：额外显示「恢复账号」「立即永久删除」两个操作。</p>
+<ul>
+  <li>恢复账号：撤销注销，账号立即可用（宽限期内有效）。</li>
+  <li>立即永久删除：跳过 3 天宽限期，立刻删除账号及其全部文件，不可恢复。</li>
+  <li>root 管理员不能被删除；任何管理员都不能对自己做禁用/重置/删除/恢复操作。</li>
+</ul>
+<h2 id="163组管理">16.3 组管理</h2>
+<p>组 = 共享空间。管理员可新建组、管理成员、设置组员权限、删除组。</p>
+<table><thead><tr><th>操作</th><th>说明</th></tr></thead><tbody>
+<tr><td>新建组</td><td>填写组名称（最多 64 字符），设置默认组员权限</td></tr>
+<tr><td>成员</td><td>按用户名搜索或填用户 ID 添加；可设「管理员（manager）」或「成员（member）」，设置其六项权限</td></tr>
+<tr><td>设置</td><td>修改组名称、默认组员权限</td></tr>
+<tr><td>删除组</td><td>删除组本身；组内文件的处理见下方注意事项</td></tr>
+</tbody></table>
+<p><strong>组员六项权限</strong>（默认只读，可按组或按成员调整）：查看、上传、下载、新建文件夹、重命名/移动、删除。组管理员始终拥有全部权限。</p>
+<blockquote><p>删除组会移除共享关系，操作前请确认组内文件是否需要保留（需要时先各自下载或复制）。</p></blockquote>
+<h2 id="164审计日志">16.4 审计日志</h2>
+<p>记录管理操作与关键业务动作，用于追溯「谁在什么时候做了什么」。</p>
+<ul>
+  <li>筛选条件：操作者（用户名）、动作、开始时间、结束时间；「查询」应用，「重置」清空条件。</li>
+  <li>列表列：时间、操作者、动作、对象、结果、IP、请求 ID。</li>
+  <li>分页显示，底部可加载更多。</li>
+  <li>保留天数在「系统设置 → 保留策略」中只读展示。</li>
+</ul>
+<p>普通用户看不到审计日志；管理员的操作同样会被记录。</p>
+<h2 id="165系统设置">16.5 系统设置</h2>
+<table><thead><tr><th>字段</th><th>说明</th><th>修改权限</th></tr></thead><tbody>
+<tr><td>站点名称</td><td>显示在分享页与浏览器标题中，最多 64 个字符</td><td>root 管理员</td></tr>
+<tr><td>允许注册</td><td>关闭时只能由管理员创建账号</td><td>仅 root 管理员</td></tr>
+<tr><td>允许用户注销账号</td><td>关闭后用户无法自助注销（注销有 3 天宽限期）</td><td>仅 root 管理员</td></tr>
+<tr><td>新用户默认配额（GB）</td><td>十进制 GB，0 表示不限</td><td>root 管理员</td></tr>
+<tr><td>保留策略</td><td>审计日志保留天数、回收站保留天数，只读展示</td><td>部署时决定</td></tr>
+</tbody></table>
+<p>修改后点「保存」，页面会提示未保存状态；「还原」可放弃修改。注意：非 root 管理员打开页面时，普通项可改，root 专属项为禁用状态。</p>
+<h2 id="166存储">16.6 存储</h2>
+<p>管理「数据落在哪个磁盘目录」。</p>
+<table><thead><tr><th>列</th><th>说明</th></tr></thead><tbody>
+<tr><td>名称 / 根路径</td><td>存储策略名与磁盘路径</td></tr>
+<tr><td>状态</td><td>启用 / 停用</td></tr>
+<tr><td>默认</td><td>新文件夹默认使用的存储</td></tr>
+<tr><td>已用</td><td>该存储已占用的空间</td></tr>
+<tr><td>节点 / 文件</td><td>引用该存储的节点数与文件数</td></tr>
+<tr><td>操作</td><td>编辑、停用/启用、删除</td></tr>
+</tbody></table>
+<p><strong>新建存储</strong>：填写名称与根路径；「设为默认」要求该存储已存在且启用。根路径应位于 Rapig 数据目录范围内，便于备份与权限管理。</p>
+<p><strong>删除限制</strong>：仍有节点/文件使用的存储不能删除；要删除默认存储，需先把其它存储设为默认。</p>
+<h2 id="167与部署相关的管理项">16.7 与部署相关的管理项</h2>
+<p>以下内容<strong>不在</strong>网页后台里改，需要部署方在服务器上操作（详见 06 与 07）：</p>
+<table><thead><tr><th>项</th><th>方式</th></tr></thead><tbody>
+<tr><td>qBittorrent 连接</td><td>环境变量 <code>RAPIG_QB_URL</code> / <code>RAPIG_QB_USERNAME</code> / <code>RAPIG_QB_PASSWORD</code>（或启动参数），改后重启</td></tr>
+<tr><td>监听地址、数据目录、profile</td><td>配置文件 / 环境变量 / 启动参数</td></tr>
+<tr><td>备份与恢复</td><td>管理脚本 <code>backup.sh</code> / <code>restore.sh</code>（Linux 安装包自带）</td></tr>
+<tr><td>日志</td><td>服务日志（Linux journalctl / Windows 日志文件）</td></tr>
+</tbody></table>
+<h2 id="168常见问题">16.8 常见问题</h2>
+<table><thead><tr><th>现象</th><th>处理</th></tr></thead><tbody>
+<tr><td>看不到管理入口</td><td>当前账号不是管理员</td></tr>
+<tr><td>root 专属开关是灰的</td><td>需用 root 管理员账号登录（初始创建的那个管理员）</td></tr>
+<tr><td>组管理标题是「我的组」</td><td>当前账号是被委派的建组用户，只能看到自己的组</td></tr>
+<tr><td>无法删除存储</td><td>该存储仍被节点使用，或它是默认存储</td></tr>
+<tr><td>忘记管理员密码</td><td>用 <code>rapig reset-admin-password</code>（Linux）或控制面板重置（Windows），见 07</td></tr>
+</tbody></table>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="profile.html"><span>上一篇</span>15. 个人资料与设置</a><a class="pn next" href="faq.html"><span>下一篇</span>17. 常见问题</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#161怎么进入">16.1 怎么进入</a><a class="toc-l2" href="#162用户管理">16.2 用户管理</a><a class="toc-l2" href="#163组管理">16.3 组管理</a><a class="toc-l2" href="#164审计日志">16.4 审计日志</a><a class="toc-l2" href="#165系统设置">16.5 系统设置</a><a class="toc-l2" href="#166存储">16.6 存储</a><a class="toc-l2" href="#167与部署相关的管理项">16.7 与部署相关的管理项</a><a class="toc-l2" href="#168常见问题">16.8 常见问题</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

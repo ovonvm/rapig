@@ -1,0 +1,17 @@
+data/
+/dist/
+web/node_modules/
+web/dist/*
+!web/dist/.keep
+web/.accept/
+*.exe
+*.log
+.DS_Store
+gui/**/bin/
+gui/**/obj/
+
+
+# Windows GUI build staging
+gui/Rapig.Gui/payload/
+dist/gui-publish/
+dist/.win-stage/

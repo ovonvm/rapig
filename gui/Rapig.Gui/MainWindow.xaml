@@ -1,0 +1,371 @@
+<Window x:Class="Rapig.Gui.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Rapig 控制面板" Height="900" Width="1200"
+        MinHeight="800" MinWidth="1060"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResizeWithGrip"
+        AllowsTransparency="False"
+        WindowStyle="SingleBorderWindow"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True"
+        TextOptions.TextFormattingMode="Display"
+        Background="{StaticResource PageBg}"
+        FontFamily="Microsoft YaHei UI, Segoe UI"
+        Foreground="{StaticResource Ink}">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- 顶部品牌条 -->
+        <Border Grid.Row="0" CornerRadius="16" Height="96" Margin="0,0,0,16">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FF8A1E" Offset="0" />
+                    <GradientStop Color="#E95C00" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid Margin="24,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Width="52" Height="52" CornerRadius="14" Background="#33FFFFFF"
+                        VerticalAlignment="Center">
+                    <TextBlock Text="R" FontSize="28" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="14,0,0,0">
+                    <TextBlock Text="Rapig" FontSize="26" FontWeight="Bold" Foreground="White" />
+                    <TextBlock Text="自托管网盘 · 本机控制面板" FontSize="12" Foreground="#F2FFFFFF" Margin="0,2,0,0" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <Border x:Name="StatusPill" CornerRadius="13" Padding="14,7" Background="#33FFFFFF">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse x:Name="StatusDot" Width="9" Height="9" Fill="White" VerticalAlignment="Center" />
+                            <TextBlock x:Name="StatusText" Text="已停止" Foreground="White" FontWeight="SemiBold"
+                                       FontSize="13" Margin="8,0,0,0" />
+                        </StackPanel>
+                    </Border>
+                    <TextBlock x:Name="VersionText" Foreground="#E8FFFFFF" FontSize="11" HorizontalAlignment="Right"
+                               Margin="0,7,2,0" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <TabControl Grid.Row="1">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                   VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <TextBlock Text="首页" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,0,6">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.25*" />
+                            <ColumnDefinition Width="18" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 左列 -->
+                        <StackPanel Grid.Column="0">
+                            <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SectionTitle}">
+                                        <Run Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                             Foreground="{StaticResource Accent}" />
+                                        <Run Text="  运行控制" />
+                                    </TextBlock>
+                                    <TextBlock x:Name="RunStateText" Style="{StaticResource Label}" Margin="0,-6,0,10"
+                                               Text="已停止 · 点「启动服务」开始" />
+
+                                    <UniformGrid Columns="2" Margin="0,0,0,10">
+                                        <Button x:Name="StartButton" Content="启动服务" Height="58" Margin="0,0,6,8"
+                                                Style="{StaticResource PrimaryButton}" Click="Start_Click" />
+                                        <Button x:Name="StopButton" Content="停止服务" Height="58" Margin="6,0,0,8"
+                                                Style="{StaticResource SecondaryButton}" Click="Stop_Click" />
+                                        <Button x:Name="RestartButton" Content="重启服务" Height="58" Margin="0,0,6,0"
+                                                Style="{StaticResource SecondaryButton}" Click="Restart_Click" />
+                                        <Button x:Name="FirstRunButton" Content="首次启动 / 查看初始密码" Height="58"
+                                                Margin="6,0,0,0" Style="{StaticResource GhostButton}"
+                                                Click="FirstRun_Click" />
+                                    </UniformGrid>
+
+                                    <Button x:Name="OpenBrowserButton" Content="打开网盘" Height="44" Width="150"
+                                            HorizontalAlignment="Left" Style="{StaticResource GhostButton}"
+                                            Click="OpenBrowser_Click" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SectionTitle}">
+                                        <Run Text="&#xE82F;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                             Foreground="{StaticResource Accent}" />
+                                        <Run Text="  使用提示" />
+                                    </TextBlock>
+                                    <TextBlock TextWrapping="Wrap" FontSize="12.5" Foreground="{StaticResource Muted}"
+                                               LineHeight="23">
+                                        1. 第一次使用点「首次启动」，会创建管理员 admin 并显示随机密码；之后点「启动服务」。<LineBreak />
+                                        2. 「打开网盘」后用 admin + 初始密码登录，登录后请立刻在网盘「设置」修改密码。<LineBreak />
+                                        3. 数据目录、备份、自检、日志与开机自启都在「高级」页。<LineBreak />
+                                        4. 关闭窗口会先确认再停止服务；下次双击 exe 可继续使用原数据。<LineBreak />
+                                        5. 忘记密码可在右侧「管理员账号」里重置（至少 8 个字符）。<LineBreak />
+                                        6. 程序需要管理员权限运行（数据在 %ProgramData%\Rapig），UAC 点「是」即可。
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- 右列 -->
+                        <StackPanel Grid.Column="2">
+                            <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SectionTitle}">
+                                        <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                             Foreground="{StaticResource Accent}" />
+                                        <Run Text="  服务信息" />
+                                    </TextBlock>
+
+                                    <TextBlock Text="监听地址" Style="{StaticResource Label}" />
+                                    <TextBlock x:Name="AddrText" FontWeight="SemiBold" FontSize="14" Margin="0,2,0,16" />
+
+                                    <TextBlock Text="数据目录" Style="{StaticResource Label}" />
+                                    <TextBlock x:Name="DataDirText" TextWrapping="Wrap" FontSize="12"
+                                               Foreground="{StaticResource Muted}" Margin="0,2,0,16" />
+
+                                    <TextBlock Text="服务方式" Style="{StaticResource Label}" />
+                                    <TextBlock Text="本机后台进程（关闭窗口即停止）" FontSize="12"
+                                               Foreground="{StaticResource Muted}" Margin="0,2,0,0" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SectionTitle}">
+                                        <Run Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                             Foreground="{StaticResource Accent}" />
+                                        <Run Text="  管理员账号" />
+                                    </TextBlock>
+                                    <TextBlock Text="admin" FontWeight="SemiBold" FontSize="15" Margin="0,2,0,10" />
+                                    <TextBlock Text="初始密码（首次启动生成，改密后文件自动删除）"
+                                               Style="{StaticResource Label}" />
+                                    <TextBlock x:Name="BootstrapPasswordText" FontFamily="Consolas, 微软雅黑"
+                                               FontSize="12.5" TextWrapping="Wrap" Margin="0,2,0,8" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                        <Button x:Name="RevealPasswordButton" Content="显示密码" Height="32" Width="100"
+                                                Style="{StaticResource GhostButton}" Margin="0,0,8,0"
+                                                Click="RevealPassword_Click" />
+                                        <Button x:Name="CopyPasswordButton" Content="复制密码" Height="32" Width="100"
+                                                Style="{StaticResource GhostButton}" Click="CopyPassword_Click" />
+                                    </StackPanel>
+
+                                    <Border Height="1" Background="{StaticResource Line}" Margin="0,0,0,14" />
+
+                                    <TextBlock Text="重置管理员密码" Style="{StaticResource Label}" />
+                                    <Grid Margin="0,4,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <PasswordBox x:Name="ResetPwBox" Grid.Column="0" Margin="0,0,10,0"
+                                                     VerticalAlignment="Center" />
+                                        <Button x:Name="ResetButton" Grid.Column="1" Content="重置" Width="88"
+                                                Height="38" VerticalAlignment="Center"
+                                                Style="{StaticResource SecondaryButton}" Click="ResetPassword_Click" />
+                                    </Grid>
+                                    <TextBlock Text="重置会立即让其它设备上的登录失效；密码至少 8 个字符。"
+                                               Style="{StaticResource Label}" Margin="0,6,0,0" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                   VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <TextBlock Text="高级" VerticalAlignment="Center" />
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,0,6">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.1*" />
+                            <ColumnDefinition Width="18" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 左列 -->
+                        <StackPanel Grid.Column="0">
+                            <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SectionTitle}">
+                                        <Run Text="&#xE912;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                             Foreground="{StaticResource Accent}" />
+                                        <Run Text="  服务配置" />
+                                    </TextBlock>
+                                    <Grid Margin="0,0,0,6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="14" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="端口（仅监听 127.0.0.1）" Style="{StaticResource Label}" />
+                                            <TextBox x:Name="PortBox" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="内存档位" Style="{StaticResource Label}" />
+                                            <ComboBox x:Name="ProfileBox" SelectedIndex="0">
+                                                <ComboBoxItem Content="low" />
+                                                <ComboBoxItem Content="high" />
+                                            </ComboBox>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Margin="0,0,0,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="14" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="日志级别" Style="{StaticResource Label}" />
+                                            <ComboBox x:Name="LogLevelBox" SelectedIndex="1">
+                                                <ComboBoxItem Content="debug" />
+                                                <ComboBoxItem Content="info" />
+                                                <ComboBoxItem Content="warn" />
+                                                <ComboBoxItem Content="error" />
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <CheckBox x:Name="CookieSecureBox" Grid.Column="2" Content="Cookie 仅 HTTPS"
+                                                  VerticalAlignment="Bottom" Margin="0,0,0,8"
+                                                  ToolTip="反向代理启用 HTTPS 时勾选" />
+                                    </Grid>
+                                    <Button x:Name="SaveButton" Content="保存并重启" Height="40" Margin="0,10,0,0"
+                                            Style="{StaticResource PrimaryButton}" Click="SaveAndRestart_Click" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SectionTitle}">
+                                        <Run Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                             Foreground="{StaticResource Accent}" />
+                                        <Run Text="  数据与备份" />
+                                    </TextBlock>
+                                    <UniformGrid Columns="2">
+                                        <Button x:Name="OpenDataButton" Content="打开数据目录" Height="40"
+                                                Style="{StaticResource GhostButton}" Margin="0,0,8,8"
+                                                Click="OpenData_Click" />
+                                        <Button x:Name="ChangeDataButton" Content="更改数据目录…" Height="40"
+                                                Style="{StaticResource GhostButton}" Margin="0,0,0,8"
+                                                Click="ChangeData_Click" />
+                                        <Button x:Name="BackupButton" Content="备份数据（zip）" Height="40"
+                                                Style="{StaticResource GhostButton}" Margin="0,0,8,0"
+                                                Click="Backup_Click" />
+                                        <Button x:Name="BackupDirButton" Content="打开备份目录" Height="40"
+                                                Style="{StaticResource GhostButton}" Click="BackupDir_Click" />
+                                    </UniformGrid>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SectionTitle}">
+                                        <Run Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                             Foreground="{StaticResource Accent}" />
+                                        <Run Text="  诊断" />
+                                    </TextBlock>
+                                    <Button x:Name="DoctorButton" Content="运行自检 doctor" Height="40"
+                                            Style="{StaticResource GhostButton}" HorizontalAlignment="Stretch"
+                                            Click="Doctor_Click" />
+                                    <TextBlock Text="自检输出" Style="{StaticResource Label}" Margin="0,12,0,4" />
+                                    <TextBox x:Name="DoctorBox" IsReadOnly="True" Height="130" TextWrapping="Wrap"
+                                             FontSize="11" Background="#F8FAFC" VerticalScrollBarVisibility="Auto" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- 右列 -->
+                        <StackPanel Grid.Column="2">
+                            <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SectionTitle}">
+                                        <Run Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                             Foreground="{StaticResource Accent}" />
+                                        <Run Text="  运行日志" />
+                                    </TextBlock>
+                                    <TextBlock Text="最近 100 行，仅本次运行" Style="{StaticResource Label}"
+                                               Margin="0,-6,0,6" />
+                                    <TextBox x:Name="LogBox" IsReadOnly="True" Height="210"
+                                             FontFamily="Consolas, 微软雅黑" FontSize="11"
+                                             Background="#0F172A" Foreground="#D6E2F0" BorderThickness="0"
+                                             VerticalScrollBarVisibility="Auto" TextWrapping="NoWrap"
+                                             HorizontalScrollBarVisibility="Auto" />
+                                    <Button x:Name="ClearLogButton" Content="清空日志" Height="32" Width="96"
+                                            HorizontalAlignment="Left" Margin="0,10,0,0"
+                                            Style="{StaticResource GhostButton}" Click="ClearLog_Click" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Style="{StaticResource SectionTitle}">
+                                        <Run Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                             Foreground="{StaticResource Accent}" />
+                                        <Run Text="  系统集成" />
+                                    </TextBlock>
+                                    <Grid Margin="0,2,0,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="开机自启" FontWeight="SemiBold" FontSize="14" />
+                                            <TextBlock Text="登录 Windows 时自动最小化启动控制面板并带起网盘服务"
+                                                       Style="{StaticResource Label}" Margin="0,2,0,0"
+                                                       TextWrapping="Wrap" />
+                                        </StackPanel>
+                                        <ToggleButton x:Name="AutoStartToggle" Grid.Column="1"
+                                                      Style="{StaticResource Switch}" Margin="8,4,0,0"
+                                                      VerticalAlignment="Center" Click="AutoStart_Toggled" />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+        <!-- 底部操作条 -->
+        <Border Grid.Row="2" Background="{StaticResource CardBg}" BorderBrush="{StaticResource Line}"
+                BorderThickness="1" CornerRadius="12" Padding="16,10" Margin="0,12,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="FooterText" Grid.Column="0" VerticalAlignment="Center" FontSize="12"
+                           Foreground="{StaticResource Muted}" TextWrapping="Wrap" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button x:Name="OpenDataFooterButton" Content="打开数据目录" Height="34"
+                            Style="{StaticResource GhostButton}" Margin="0,0,8,0" Click="OpenData_Click" />
+                    <Button x:Name="ExitButton" Content="退出 Rapig" Height="34" Width="110"
+                            Style="{StaticResource DangerGhostButton}" Click="Exit_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

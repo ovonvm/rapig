@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Rapig</AssemblyName>
+    <RootNamespace>Rapig.Gui</RootNamespace>
+    <Product>Rapig</Product>
+    <AssemblyTitle>Rapig 控制面板</AssemblyTitle>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>0.12.0</Version>
+    <FileVersion>0.12.0.0</FileVersion>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <PublishSingleFile Condition="'$(RuntimeIdentifier)' != ''">true</PublishSingleFile>
+    <SelfContained Condition="'$(RuntimeIdentifier)' != ''">true</SelfContained>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 构建脚本把 Windows 版核心释放在 payload/rapig-core.exe；单文件包内嵌。 -->
+    <EmbeddedResource Include="payload\rapig-core.exe" Condition="Exists('payload\rapig-core.exe')">
+      <LogicalName>Rapig.Gui.payload.rapig-core.exe</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

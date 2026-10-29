@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. Linux 部署 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="linux">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">4. Linux 部署</h1>
+      <p>Linux 上推荐用安装包自带的 <code>install.sh</code>：它会安装程序、创建受限用户、注册 systemd 服务、启动并打印初始管理员密码。也可以用便携方式直接前台运行。</p>
+<h2 id="41安装包方式推荐">4.1 安装包方式（推荐）</h2>
+<pre><code class="language-bash">tar -xzf rapig-v2.0.0-linux-amd64.tar.gz
+cd rapig-v2.0.0-linux-amd64
+sha256sum -c SHA256SUMS
+sudo ./install.sh</code></pre>
+<p><code>install.sh</code> 是 <code>rapig install</code> 的薄包装，常用参数：</p>
+<table><thead><tr><th>参数</th><th>作用</th><th>默认</th></tr></thead><tbody>
+<tr><td><code>--prefix &lt;dir&gt;</code></td><td>安装目录</td><td><code>/opt/rapig</code></td></tr>
+<tr><td><code>--user &lt;name&gt;</code></td><td>运行服务的系统用户</td><td><code>rapig</code></td></tr>
+<tr><td><code>--port &lt;n&gt;</code></td><td>监听端口</td><td><code>50011</code></td></tr>
+<tr><td><code>--data &lt;dir&gt;</code></td><td>数据目录</td><td><code>&lt;prefix&gt;/data</code></td></tr>
+<tr><td><code>--no-service</code></td><td>只复制文件，不注册 systemd</td><td>关</td></tr>
+<tr><td><code>--dry-run</code></td><td>只打印将要做什么（可不用 root）</td><td>关</td></tr>
+<tr><td><code>--no-credentials</code></td><td>安装摘要中不打印初始管理员密码</td><td>关</td></tr>
+</tbody></table>
+<p>安装完成后：</p>
+<pre><code class="language-bash">rapig doctor      # 自检
+rapig             # 运维菜单</code></pre>
+<p>安装摘要里会显示访问地址、数据目录、配置文件和 <code>admin</code> 的初始密码；密码同时写入 <code>&lt;data&gt;/bootstrap/initial-admin.txt</code>，首次修改密码后自动删除。</p>
+<h2 id="42便携方式">4.2 便携方式</h2>
+<pre><code class="language-bash">chmod +x rapig
+./rapig serve</code></pre>
+<ul>
+  <li>不需要 root，也不需要 systemd。</li>
+  <li>数据默认写在程序旁边的 <code>data/</code> 目录（可用 <code>-data /path/to/data</code> 指定）。</li>
+  <li><code>Ctrl+C</code> 会优雅退出。</li>
+  <li>适合临时试用，或放进自己的进程管理器（如 supervisord）里托管。</li>
+</ul>
+<h2 id="43服务管理">4.3 服务管理</h2>
+<pre><code class="language-bash">sudo systemctl status rapig     # 查看状态
+sudo systemctl restart rapig    # 重启（改配置后）
+sudo systemctl stop rapig       # 停止
+sudo systemctl disable rapig    # 取消开机自启
+journalctl -u rapig -f          # 跟随日志</code></pre>
+<p>如果安装时用了 <code>--no-service</code>，可以手动生成 unit 模板再放到 systemd：</p>
+<pre><code class="language-bash">rapig gen-unit --prefix /opt/rapig --port 50011 &gt; rapig.service
+sudo cp rapig.service /etc/systemd/system/rapig.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now rapig</code></pre>
+<h2 id="44目录与权限">4.4 目录与权限</h2>
+<table><thead><tr><th>路径</th><th>内容</th><th>权限建议</th></tr></thead><tbody>
+<tr><td><code>/opt/rapig/rapig</code></td><td>程序</td><td>0755</td></tr>
+<tr><td><code>/opt/rapig/rapig.env</code></td><td>配置（环境变量）</td><td>0600</td></tr>
+<tr><td><code>/opt/rapig/data/</code></td><td>数据库、文件、初始密码</td><td>0700，属主为运行用户</td></tr>
+<tr><td><code>/opt/rapig/backup/</code></td><td>备份输出</td><td>运行用户可写</td></tr>
+</tbody></table>
+<p>手工拷贝或移动过数据目录后，务必修正属主：</p>
+<pre><code class="language-bash">sudo chown -R rapig:rapig /opt/rapig/data</code></pre>
+<h2 id="45常用运维命令">4.5 常用运维命令</h2>
+<table><thead><tr><th>目的</th><th>命令</th></tr></thead><tbody>
+<tr><td>自检</td><td><code>sudo rapig doctor</code></td></tr>
+<tr><td>交互菜单</td><td><code>sudo rapig</code></td></tr>
+<tr><td>修改地址/端口</td><td><code>sudo rapig config</code>（改完 <code>sudo rapig service restart</code>）</td></tr>
+<tr><td>备份</td><td><code>sudo /opt/rapig/scripts/backup.sh</code></td></tr>
+<tr><td>恢复演练</td><td><code>sudo /opt/rapig/scripts/restore.sh --list</code></td></tr>
+<tr><td>升级</td><td><code>sudo rapig upgrade --binary &lt;新二进制&gt;</code></td></tr>
+<tr><td>重置管理员密码</td><td><code>sudo rapig reset-admin-password</code></td></tr>
+</tbody></table>
+<h2 id="46升级">4.6 升级</h2>
+<pre><code class="language-bash">sudo ./scripts/backup.sh                      # 先备份
+sudo rapig upgrade --binary ./rapig-v2.0.1 --prefix /opt/rapig --port 50011</code></pre>
+<p><code>rapig upgrade</code> 会：停止服务 → 备份现有二进制 → 替换 → 启动 → 等健康检查通过；失败会自动换回旧二进制。旧的二进制会保留为 <code>rapig.bak-&lt;时间戳&gt;</code>，需要时手工回滚。</p>
+<p>源码仓库里还有 <code>scripts/upgrade.sh &lt;新二进制&gt;</code>（不在安装包内），流程类似：自动备份 + 原子替换 + 失败回滚。</p>
+<h2 id="47卸载">4.7 卸载</h2>
+<pre><code class="language-bash">sudo rapig uninstall</code></pre>
+<p>会停止并禁用服务、删除 unit、删除安装目录（<strong>包括 data 数据</strong>）和系统用户。卸载前请先备份；如果只想保留数据后重装，请先手工拷走 <code>&lt;prefix&gt;/data</code>。</p>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="windows.html"><span>上一篇</span>3. Windows 部署</a><a class="pn next" href="proxy.html"><span>下一篇</span>5. 反向代理与 HTTPS</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#41安装包方式推荐">4.1 安装包方式（推荐）</a><a class="toc-l2" href="#42便携方式">4.2 便携方式</a><a class="toc-l2" href="#43服务管理">4.3 服务管理</a><a class="toc-l2" href="#44目录与权限">4.4 目录与权限</a><a class="toc-l2" href="#45常用运维命令">4.5 常用运维命令</a><a class="toc-l2" href="#46升级">4.6 升级</a><a class="toc-l2" href="#47卸载">4.7 卸载</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

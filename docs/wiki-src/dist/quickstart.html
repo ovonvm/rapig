@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. 快速开始 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="quickstart">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">1. 快速开始</h1>
+      <p>Rapig 2.0 把「网页界面 + 文件服务 + 用户系统 + 后台任务」全部装进一个可执行文件，所以部署只有三步：拿到程序、准备数据目录、打开浏览器登录。</p>
+<h2 id="11三种部署方式">1.1 三种部署方式</h2>
+<table><thead><tr><th>方式</th><th>适合谁</th><th>怎么开始</th><th>默认数据目录</th></tr></thead><tbody>
+<tr><td>Linux 安装包（推荐）</td><td>服务器、NAS、长期运行</td><td>解包后执行 <code>sudo ./install.sh</code>，自动注册 systemd 服务</td><td><code>/opt/rapig/data</code></td></tr>
+<tr><td>便携运行</td><td>临时试用、没有 systemd 的环境</td><td><code>./rapig serve</code>，前台运行</td><td>程序所在目录下的 <code>data/</code></td></tr>
+<tr><td>Windows 控制面板</td><td>Windows 10/11 桌面</td><td>双击 <code>Rapig.exe</code>，点「启动服务」</td><td><code>%ProgramData%\Rapig\data</code></td></tr>
+</tbody></table>
+<p>三种方式运行的是同一个核心程序，功能完全一致，区别只在安装与服务管理方式。</p>
+<h2 id="12linux安装包方式">1.2 Linux：安装包方式</h2>
+<pre><code class="language-bash">tar -xzf rapig-v2.0.0-linux-amd64.tar.gz
+cd rapig-v2.0.0-linux-amd64
+sha256sum -c SHA256SUMS
+sudo ./install.sh</code></pre>
+<p>安装脚本会：</p>
+<ol>
+  <li>把程序放到 <code>/opt/rapig/rapig</code>，创建受限系统用户 <code>rapig</code> 运行它；</li>
+  <li>生成 <code>/opt/rapig/rapig.env</code>（配置文件）并注册 systemd 服务；</li>
+  <li>启动服务并等待健康检查通过，最后打印访问地址、数据目录和 <strong>管理员初始密码</strong>。</li>
+</ol>
+<p>之后执行：</p>
+<pre><code class="language-bash">rapig doctor      # 自检，全绿即可
+rapig             # 打开运维菜单（启动/停止/备份/升级等）</code></pre>
+<h2 id="13windows控制面板方式">1.3 Windows：控制面板方式</h2>
+<ol>
+  <li>把 <code>Rapig.exe</code> 放到一个单独文件夹（不要放在中文或很深的路径下）。</li>
+  <li>双击运行，在 UAC 弹窗点「是」（程序需要管理员权限写入 <code>%ProgramData%\Rapig</code>）。</li>
+  <li>首次启动会自动创建管理员 <code>admin</code>，随机初始密码会显示一次，同时保存在 <code>%ProgramData%\Rapig\data\bootstrap\initial-admin.txt</code>。</li>
+  <li>在首页点「启动服务」，再点「在浏览器打开网盘」。</li>
+  <li>用 <code>admin</code> 和初始密码登录，然后到「设置」修改密码。</li>
+</ol>
+<h2 id="14便携方式任意系统">1.4 便携方式（任意系统）</h2>
+<pre><code class="language-bash">chmod +x rapig
+./rapig serve</code></pre>
+<p>浏览器打开 <code>http://127.0.0.1:50011</code>。首次启动会打印 <code>admin</code> 的初始密码；<code>Ctrl+C</code> 优雅退出。数据默认写在程序旁边的 <code>data/</code> 目录。</p>
+<h2 id="15第一次登录">1.5 第一次登录</h2>
+<ol>
+  <li>打开 <code>http://127.0.0.1:50011</code>。</li>
+  <li>用户名填 <code>admin</code>，密码填安装/首次启动时显示的初始密码。</li>
+  <li>登录后先到「设置 → 修改密码」改掉初始密码（改密后其它设备上的旧会话会失效）。</li>
+</ol>
+<blockquote><p>初始密码只显示一次。忘记时可以：Linux 用 <code>sudo rapig reset-admin-password</code>；Windows 用控制面板「高级 → 重置管理员密码」。重置后需要重新登录。</p></blockquote>
+<h2 id="16安装后目录速览linux">1.6 安装后目录速览（Linux）</h2>
+<table><thead><tr><th>路径</th><th>内容</th></tr></thead><tbody>
+<tr><td><code>/opt/rapig/rapig</code></td><td>程序二进制</td></tr>
+<tr><td><code>/opt/rapig/rapig.env</code></td><td>环境变量配置文件（权限 0600）</td></tr>
+<tr><td><code>/opt/rapig/data/db/rapig.db</code></td><td>SQLite 数据库（WAL 模式）</td></tr>
+<tr><td><code>/opt/rapig/data/storage/</code></td><td>文件内容（按内容哈希存放）</td></tr>
+<tr><td><code>/opt/rapig/data/bootstrap/</code></td><td>首次管理员信息（改密后自动删除）</td></tr>
+<tr><td><code>/opt/rapig/backup/</code></td><td>备份目录（由备份脚本生成）</td></tr>
+</tbody></table>
+<p>Windows 下对应位置是 <code>%ProgramData%\Rapig\data</code>、<code>%ProgramData%\Rapig\backups</code>（控制面板「高级 → 打开数据目录/备份目录」可直接打开）。</p>
+<h2 id="17接下来做什么">1.7 接下来做什么</h2>
+<ul>
+  <li>想让别人也能访问：先读「5. 反向代理与 HTTPS」，不要直接把端口暴露到公网。</li>
+  <li>想在多台设备同步文件：登录后直接上传，「我的文件」就是你的根目录。</li>
+  <li>需要给同事分权限：读「16. 管理后台」的组管理，或先给他们各建一个账号。</li>
+  <li>想定时备份：读「7. 升级、备份与迁移」。</li>
+</ul>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="./"><span>上一篇</span>Rapig 2.0 使用手册</a><a class="pn next" href="requirements.html"><span>下一篇</span>2. 环境与依赖</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#11三种部署方式">1.1 三种部署方式</a><a class="toc-l2" href="#12linux安装包方式">1.2 Linux：安装包方式</a><a class="toc-l2" href="#13windows控制面板方式">1.3 Windows：控制面板方式</a><a class="toc-l2" href="#14便携方式任意系统">1.4 便携方式（任意系统）</a><a class="toc-l2" href="#15第一次登录">1.5 第一次登录</a><a class="toc-l2" href="#16安装后目录速览linux">1.6 安装后目录速览（Linux）</a><a class="toc-l2" href="#17接下来做什么">1.7 接下来做什么</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

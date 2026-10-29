@@ -1,0 +1,38 @@
+# Rapig systemd unit (Linux). Installed by `sudo rapig install` to
+# /etc/systemd/system/rapig.service; `rapig gen-unit` prints this template with
+# the current layout. Configuration lives in /opt/rapig/rapig.env.
+[Unit]
+Description=Rapig cloud drive
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=rapig
+Group=rapig
+WorkingDirectory=/opt/rapig
+EnvironmentFile=/opt/rapig/rapig.env
+ExecStart=/opt/rapig/rapig serve
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=20
+LimitNOFILE=65536
+
+# Filesystem and privilege hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/rapig
+
+# 512 MB baseline (raise MemoryMax and switch to -profile high on bigger hosts)
+MemoryMax=512M
+MemorySwapMax=0
+CPUQuota=100%
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=rapig
+
+[Install]
+WantedBy=multi-user.target

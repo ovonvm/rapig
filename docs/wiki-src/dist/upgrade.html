@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7. 升级、备份与迁移 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="upgrade">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">7. 升级、备份与迁移</h1>
+      <p>网盘最重要的两件事：能升级，且升级前有备份、升级失败能退回去。本章覆盖这三件事，以及换机器时怎么把数据搬走。</p>
+<h2 id="71升级前检查清单">7.1 升级前检查清单</h2>
+<ul>
+  <li>[ ] 已做一次完整备份（见 7.3），并确认备份文件存在、大小正常。</li>
+  <li>[ ] 记录当前版本：<code>rapig version</code>。</li>
+  <li>[ ] 阅读新版本的发布说明；如有数据库迁移，确认自己有回退路径。</li>
+  <li>[ ] 选择低峰时间：升级期间服务会短暂停止。</li>
+</ul>
+<h2 id="72升级">7.2 升级</h2>
+<h3 id="linux推荐方式">Linux（推荐方式）</h3>
+<pre><code class="language-bash">sudo ./scripts/backup.sh
+sudo rapig upgrade --binary ./rapig-v2.0.1 --prefix /opt/rapig --port 50011</code></pre>
+<p>流程：停止服务 → 备份当前二进制 → 替换 → 启动 → 等待健康检查；失败会自动换回旧二进制并报错。旧二进制保留为 <code>rapig.bak-&lt;时间戳&gt;</code>。</p>
+<p>源码仓库里另有 <code>scripts/upgrade.sh &lt;新二进制&gt;</code>，会先调用 <code>backup.sh</code>、原子替换并验证健康检查，失败回滚；它不在安装包内，安装包用户直接用 <code>rapig upgrade</code> 即可。</p>
+<p>升级只替换程序，不会动 <code>rapig.env</code>、<code>data/</code> 和 systemd unit；数据库迁移在启动时自动执行。</p>
+<h3 id="windows">Windows</h3>
+<ol>
+  <li>控制面板「停止服务」。</li>
+  <li>用新的 <code>Rapig.exe</code> 覆盖旧文件（先备份数据，见 7.3）。</li>
+  <li>双击打开，点「启动服务」，确认能正常登录。</li>
+</ol>
+<p>数据在 <code>%ProgramData%\Rapig</code>，覆盖 exe 不影响数据。</p>
+<h3 id="便携方式">便携方式</h3>
+<p>停止进程，替换二进制，重新 <code>./rapig serve</code> 即可。</p>
+<h2 id="73备份">7.3 备份</h2>
+<h3 id="备份什么">备份什么</h3>
+<table><thead><tr><th>内容</th><th>位置（Linux 安装包）</th><th>是否必须</th></tr></thead><tbody>
+<tr><td>数据库</td><td><code>&lt;prefix&gt;/data/db/rapig.db</code>（含 <code>-wal</code>/<code>-shm</code> 一起拷）</td><td>必须</td></tr>
+<tr><td>文件内容</td><td><code>&lt;prefix&gt;/data/storage/</code></td><td>必须</td></tr>
+<tr><td>初始管理员信息</td><td><code>&lt;prefix&gt;/data/bootstrap/</code></td><td>可选</td></tr>
+<tr><td>配置</td><td><code>&lt;prefix&gt;/rapig.env</code></td><td>建议</td></tr>
+</tbody></table>
+<p>只备份数据库会丢文件内容；只备份 <code>storage/</code> 会丢索引，两者必须成对。</p>
+<h3 id="备份脚本linux">备份脚本（Linux）</h3>
+<pre><code class="language-bash">sudo /opt/rapig/scripts/backup.sh</code></pre>
+<ul>
+  <li>输出目录：<code>/opt/rapig/backup/&lt;UTC 时间戳&gt;/</code>，内部包含 <code>db/</code>、<code>storage/</code>、<code>bootstrap/</code> 和 <code>manifest.json</code>。</li>
+  <li>保留策略：最近 7 个 + 最近 4 个周日 + 最近 3 个每月 1 号。</li>
+  <li>依赖 <code>rsync</code> 和 <code>sqlite3</code>（或 <code>python3</code>），数据库用 SQLite 的在线备份接口做一致性快照。</li>
+</ul>
+<p>用 cron 每天自动备份：</p>
+<pre><code class="language-cron">30 2 * * * /opt/rapig/scripts/backup.sh &gt;&gt; /var/log/rapig-backup.log 2&gt;&amp;1</code></pre>
+<h3 id="备份脚本windows">备份脚本（Windows）</h3>
+<p>控制面板「高级 → 备份数据（zip）」会把整个数据目录打成 zip，放到 <code>%ProgramData%\Rapig\backups</code>。建议把该目录再同步到另一块磁盘或网络位置。</p>
+<h2 id="74恢复">7.4 恢复</h2>
+<h3 id="演练不动真实数据">演练（不动真实数据）</h3>
+<pre><code class="language-bash">sudo /opt/rapig/scripts/restore.sh --list                  # 列出快照
+sudo /opt/rapig/scripts/restore.sh --snapshot &lt;时间戳&gt; --drill</code></pre>
+<p>演练会把快照解到临时目录并校验，不会覆盖正在运行的数据；建议每次备份后抽一次演练。</p>
+<h3 id="正式恢复">正式恢复</h3>
+<pre><code class="language-bash">sudo rapig service stop
+sudo /opt/rapig/scripts/restore.sh --snapshot &lt;时间戳&gt; --apply --yes
+sudo rapig service start</code></pre>
+<p>恢复会覆盖数据目录，务必确认快照时间戳。Windows 恢复：停止服务 → 解压备份 zip → 用其中内容替换 <code>%ProgramData%\Rapig\data</code> → 启动服务。</p>
+<h2 id="75迁移数据目录换机器">7.5 迁移数据目录 / 换机器</h2>
+<p><strong>Linux</strong>：停止服务 → 用 <code>rsync -a</code> 复制 <code>data/</code> 到新位置 → 修改 <code>RAPIG_DATA_DIR</code>（或 <code>rapig config</code>）→ 启动 → <code>rapig doctor</code> 复核。注意属主要改成运行用户。</p>
+<p><strong>Windows</strong>：控制面板「高级 → 更改数据目录」，只能选择空目录；程序会停止服务、复制数据、保存配置并重启。</p>
+<p><strong>换机器</strong>：在新机器安装同版本 → 停止服务 → 用备份恢复数据目录 → 启动并验证登录、文件列表、下载。域名与反向代理配置需要在新机器上重建。</p>
+<h2 id="76回滚">7.6 回滚</h2>
+<ul>
+  <li>程序回滚：把 <code>rapig.bak-&lt;时间戳&gt;</code> 改回 <code>rapig</code> 并重启；或重新安装旧版本二进制。</li>
+  <li>数据回滚：用升级前的备份快照做 7.4 的正式恢复。</li>
+  <li>若升级失败并自动回滚，检查 <code>journalctl -u rapig -n 100</code> 的报错后再决定是否重试。</li>
+</ul>
+<h2 id="77常见问题">7.7 常见问题</h2>
+<table><thead><tr><th>现象</th><th>处理</th></tr></thead><tbody>
+<tr><td>备份时报缺少 sqlite3/python3</td><td>安装其一，或停止服务后手工拷贝 <code>db/</code> 与 <code>storage/</code></td></tr>
+<tr><td>恢复后文件在、但列表为空</td><td>数据目录指错了；检查 <code>RAPIG_DATA_DIR</code> 与运行用户权限</td></tr>
+<tr><td>升级后无法启动</td><td>看日志；多数是 <code>rapig.env</code> 语法错误、端口占用或数据目录权限</td></tr>
+<tr><td>磁盘快速变满</td><td>回收站与分享仍在占用空间；清理回收站/撤销分享，并确认备份目录不和数据同盘</td></tr>
+</tbody></table>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="config.html"><span>上一篇</span>6. 配置文件说明</a><a class="pn next" href="login.html"><span>下一篇</span>8. 登录与账号</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#71升级前检查清单">7.1 升级前检查清单</a><a class="toc-l2" href="#72升级">7.2 升级</a><a class="toc-l3" href="#linux推荐方式">Linux（推荐方式）</a><a class="toc-l3" href="#windows">Windows</a><a class="toc-l3" href="#便携方式">便携方式</a><a class="toc-l2" href="#73备份">7.3 备份</a><a class="toc-l3" href="#备份什么">备份什么</a><a class="toc-l3" href="#备份脚本linux">备份脚本（Linux）</a><a class="toc-l3" href="#备份脚本windows">备份脚本（Windows）</a><a class="toc-l2" href="#74恢复">7.4 恢复</a><a class="toc-l3" href="#演练不动真实数据">演练（不动真实数据）</a><a class="toc-l3" href="#正式恢复">正式恢复</a><a class="toc-l2" href="#75迁移数据目录换机器">7.5 迁移数据目录 / 换机器</a><a class="toc-l2" href="#76回滚">7.6 回滚</a><a class="toc-l2" href="#77常见问题">7.7 常见问题</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

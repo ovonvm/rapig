@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12. 回收站 · Rapig</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-slug="trash">
+<header class="top">
+  <button class="icon" id="navToggle" aria-label="目录">☰</button>
+  <a class="brand" href="index.html"><span class="logo">◗</span> Rapig</a>
+  <span class="docname">Rapig</span>
+  <div class="grow"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜索（/）" autocomplete="off">
+    <div class="hits" id="hits" hidden></div>
+  </div>
+  <button class="icon" id="themeToggle" aria-label="主题">☾</button>
+</header>
+<div class="shell">
+  <aside class="side" id="side">
+    <nav><div class="nav-group"><div class="nav-chapter">开始</div><ul><li><a href="./" data-slug="index">Rapig 2.0 使用手册</a></li><li><a href="quickstart.html" data-slug="quickstart">1. 快速开始</a></li><li><a href="requirements.html" data-slug="requirements">2. 环境与依赖</a></li><li><a href="windows.html" data-slug="windows">3. Windows 部署</a></li><li><a href="linux.html" data-slug="linux">4. Linux 部署</a></li><li><a href="proxy.html" data-slug="proxy">5. 反向代理与 HTTPS</a></li><li><a href="config.html" data-slug="config">6. 配置文件说明</a></li><li><a href="upgrade.html" data-slug="upgrade">7. 升级、备份与迁移</a></li></ul></div><div class="nav-group"><div class="nav-chapter">日常使用</div><ul><li><a href="login.html" data-slug="login">8. 登录与账号</a></li><li><a href="navigation.html" data-slug="navigation">9. 导航与界面</a></li><li><a href="files.html" data-slug="files">10. 文件管理</a></li><li><a href="playback.html" data-slug="playback">11. 播放、预览与文本编辑</a></li><li><a href="trash.html" data-slug="trash">12. 回收站</a></li><li><a href="downloads.html" data-slug="downloads">13. 下载中心</a></li><li><a href="shares.html" data-slug="shares">14. 分享</a></li><li><a href="profile.html" data-slug="profile">15. 个人资料与设置</a></li></ul></div><div class="nav-group"><div class="nav-chapter">管理</div><ul><li><a href="admin.html" data-slug="admin">16. 管理后台</a></li></ul></div><div class="nav-group"><div class="nav-chapter">参考</div><ul><li><a href="faq.html" data-slug="faq">17. 常见问题</a></li></ul></div></nav>
+  </aside>
+  <main class="content">
+    <article>
+      <h1 class="doctitle">12. 回收站</h1>
+      <p>删除文件默认不会立刻消失，而是先进入回收站，给自己一个反悔的机会。</p>
+<h2 id="121进入回收站">12.1 进入回收站</h2>
+<p>左侧栏「回收站」进入 <code>/trash</code>。列表每行显示：</p>
+<table><thead><tr><th>列</th><th>内容</th></tr></thead><tbody>
+<tr><td>名称</td><td>被删除的文件或文件夹</td></tr>
+<tr><td>原位置</td><td>删除前所在的目录</td></tr>
+<tr><td>删除时间</td><td>删除操作发生的时间</td></tr>
+<tr><td>剩余</td><td>距离自动彻底删除还剩多少天/小时</td></tr>
+</tbody></table>
+<h2 id="122两种删除的区别">12.2 两种删除的区别</h2>
+<table><thead><tr><th>操作</th><th>位置</th><th>结果</th></tr></thead><tbody>
+<tr><td>删除</td><td>文件页批量条 / 行末菜单</td><td>移入回收站，默认保留 7 天</td></tr>
+<tr><td>彻底删除</td><td>回收站行末「删除」</td><td>立即从磁盘删除，不可恢复</td></tr>
+<tr><td>清空回收站</td><td>回收站工具条</td><td>立即清空全部，不可恢复（需确认）</td></tr>
+</tbody></table>
+<blockquote><p>组空间里的删除是<strong>永久删除</strong>，不会进入回收站，操作前会二次确认。</p></blockquote>
+<h2 id="123恢复">12.3 恢复</h2>
+<ol>
+  <li>在回收站找到条目，点行末「恢复」；勾选多项后可批量恢复。</li>
+  <li>优先恢复到<strong>原目录</strong>。</li>
+  <li>如果原目录已被删除，或原目录里已有同名文件，会自动改放到「我的文件」根目录，并在名称后追加 <code> (1)</code>、<code> (2)</code> 等序号，保证不覆盖。</li>
+  <li>恢复后文件回到普通文件列表，「剩余」列不再显示。</li>
+</ol>
+<h2 id="124保留期与自动清理">12.4 保留期与自动清理</h2>
+<ul>
+  <li>默认保留 <strong>7 天</strong>：超过保留期的条目由服务端定时清理，列表中的「剩余」会倒计时。</li>
+  <li>保留天数由管理员在「系统设置」中设定，用户界面只显示、不可修改。</li>
+  <li>快到期时请及时恢复；到期后彻底删除不可找回。</li>
+</ul>
+<h2 id="125与配额的关系">12.5 与配额的关系</h2>
+<ul>
+  <li>回收站里的文件<strong>仍然占用</strong>你的配额与磁盘空间——删除只是改了状态，内容还在。</li>
+  <li>彻底删除（或清空回收站）时才释放配额；如果提示空间不足，先清理回收站。</li>
+</ul>
+<h2 id="126与账号注销的关系">12.6 与账号注销的关系</h2>
+<p>注销账号（见 15）有 3 天宽限期；宽限期内管理员可以恢复账号。宽限期结束后，账号及其文件（包括回收站内容）会被彻底删除。</p>
+<h2 id="127常见问题">12.7 常见问题</h2>
+<table><thead><tr><th>现象</th><th>原因与处理</th></tr></thead><tbody>
+<tr><td>恢复后名字带了 <code> (1)</code></td><td>原目录已有同名文件，系统自动改名避免覆盖</td></tr>
+<tr><td>找不到刚删除的文件</td><td>确认是否在「组空间」中删除（组空间直接永久删除，不进回收站）</td></tr>
+<tr><td>回收站是空的但空间仍被占用</td><td>检查是否还有其它文件；回收站只统计当前账号</td></tr>
+<tr><td>想立即释放空间</td><td>在回收站「彻底删除」或「清空回收站」，不可恢复</td></tr>
+<tr><td>「剩余」显示 0 天</td><td>即将被清理，请立即恢复</td></tr>
+</tbody></table>
+<h2 id="128数据层面的说明">12.8 数据层面的说明</h2>
+<ul>
+  <li>回收站条目在数据库中是「已删除状态」的节点，文件内容仍完整保留，因此恢复很快。</li>
+  <li>彻底删除会删除内容块（当没有其它文件引用它时），这是空间真正释放的时刻。</li>
+  <li>不要直接修改数据库或数据目录来「清理回收站」，请在界面操作；需要整体清理请用管理员备份/维护流程。</li>
+</ul>
+
+    </article>
+    <div class="pager"><a class="pn prev" href="playback.html"><span>上一篇</span>11. 播放、预览与文本编辑</a><a class="pn next" href="downloads.html"><span>下一篇</span>13. 下载中心</a></div>
+  </main>
+  <aside class="toc"><div class="toc-title">本页目录</div><a class="toc-l2" href="#121进入回收站">12.1 进入回收站</a><a class="toc-l2" href="#122两种删除的区别">12.2 两种删除的区别</a><a class="toc-l2" href="#123恢复">12.3 恢复</a><a class="toc-l2" href="#124保留期与自动清理">12.4 保留期与自动清理</a><a class="toc-l2" href="#125与配额的关系">12.5 与配额的关系</a><a class="toc-l2" href="#126与账号注销的关系">12.6 与账号注销的关系</a><a class="toc-l2" href="#127常见问题">12.7 常见问题</a><a class="toc-l2" href="#128数据层面的说明">12.8 数据层面的说明</a></aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

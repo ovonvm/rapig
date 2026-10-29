@@ -1,0 +1,9 @@
+# 跨平台换行：仓库与导出物统一 LF（Windows 工作树也一样，Go/Vite 都不需要 CRLF）。
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff2 binary
+*.exe binary
+*.db binary
+*.gz binary
